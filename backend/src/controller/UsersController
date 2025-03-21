@@ -1,0 +1,109 @@
+const bcrypt = require('bcryptjs');
+const db = require('../config/database.js');
+
+const createUser = async (req, res) => {
+    const { username, email, password } = req.body;
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const [result] = await db.execute(
+            'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+            [username, email, hashedPassword]
+        );
+
+        const data = {
+            id: result.insertId,
+            username: username,
+            email: email
+        };
+
+        res.status(201).json({
+            status: 201,
+            message: 'resgister successful',
+            data
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: error.message,
+            data: null
+        });
+    }
+};
+
+const getUser = async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const [result] = await db.execute(
+            'SELECT id, username, email, created_at FROM users WHERE id = ?',
+            [userId]
+        );
+
+        if (result.length === 0) {
+            return res.status(404).json({
+                status: 404,
+                message: 'User not found',
+                data: null
+            });
+        }
+
+        res.status(200).json({
+            status: 200,
+            message: 'User found',
+            data: result[0]
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: error.message,
+            data: null
+        });
+    }
+};
+
+
+const updateUser = async (req, res) => {
+    const userId = req.params.id;
+    const { username, email, password } = req.body;
+
+    try {
+        let hashedPassword = null;
+        if (password) {
+            hashedPassword = await bcrypt.hash(password, 10);
+        }
+
+        const [result] = await db.execute(
+            'UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?',
+            [username, email, hashedPassword, userId]
+        );
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({
+                status: 200,
+                message: 'User updated successfully',
+                data: { id: userId, username, email }
+            });
+        } else {
+            res.status(404).json({
+                status: 404,
+                message: 'User not found',
+                data: null
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: error.message,
+            data: null
+        });
+    }
+};
+
+module.exports = {
+    createUser,
+    updateUser,
+    getUser,
+
+};
