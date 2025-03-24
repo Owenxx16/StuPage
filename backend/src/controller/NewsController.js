@@ -1,24 +1,16 @@
 const db = require('../config/database');
-const upload = require('../config/upload');
 
 const createNews = async (req, res) => {
     const { title, content, category_id, user_id } = req.body;
-    const image_title = req.file ? `/uploads/news_thumbnail/${req.file.filename}` : null;
 
     if (!title || !content || !category_id || !user_id) {
         return res.status(400).json({ status: 400, message: "Missing required fields" });
     }
 
     try {
-        const { title, content, category_id, user_id, news_content } = req.body;
+        const mainImageFile = req.file;
+        const image_title = mainImageFile ? `assets/${mainImageFile.filename}` : null;
 
-        // 1) Lấy file ảnh đại diện (nếu có)
-        //    req.files['image'] là mảng chứa file của fieldname "image"
-        const mainImageFile = req.files['image'] ? req.files['image'][0] : null;
-        // Lưu tên file (hoặc đường dẫn)
-        const image_title = mainImageFile ? mainImageFile.filename : null;
-
-        // 2) Thêm tin tức vào bảng `news`
         const [newsResult] = await db.execute(
             `INSERT INTO news 
                 (title, content, category_id, user_id, image_title, created_at) 
@@ -29,9 +21,8 @@ const createNews = async (req, res) => {
         res.status(201).json({
             status: 201,
             message: "News created successfully",
-            data: { id: newsResult.id, title, image_title }
+            data: { id: newsResult.insertId, title, image_title }
         });
-
     } catch (error) {
         console.error("Error creating news:", error);
         res.status(500).json({ status: 500, message: error.message });
@@ -186,7 +177,6 @@ const getAllNews = async (req, res) => {
             'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username AS author, news.created_at FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id'
         );
 
-        // Lấy các nội dung của mỗi bài tin tức
         for (const news of newsResults) {
             const [contentResults] = await db.execute(
                 'SELECT type, value FROM news_content WHERE news_id = ?', [news.id]
@@ -244,47 +234,40 @@ const getNewsById = async (req, res) => {
 };
 const updateNews = async (req, res) => {
     const newsId = req.params.id;
-    const { title, content, category_id, image_title, news_content } = req.body;
+    const { title, content, category_id, user_id } = req.body;
+
+    if (!title || !content || !category_id || !user_id) {
+        return res.status(400).json({ status: 400, message: "Missing required fields" });
+    }
 
     try {
-        // Cập nhật thông tin tin tức trong bảng news
+        const mainImageFile = req.file;
+        const image_title = mainImageFile ? `assets/${mainImageFile.filename}` : null;
+
         await db.execute(
-            'UPDATE news SET title = ?, content = ?, category_id = ?, image_title = ?, updated_at = ? WHERE id = ?',
-            [title, content, category_id, image_title, new Date(), newsId]
+            `UPDATE news 
+             SET title = ?, content = ?, category_id = ?, user_id = ?, 
+                 image_title = IFNULL(?, image_title), updated_at = ? 
+             WHERE id = ?`,
+            [title, content, category_id, user_id, image_title, new Date(), newsId]
         );
-
-        // Xóa các nội dung cũ của bài viết
-        await db.execute('DELETE FROM news_content WHERE news_id = ?', [newsId]);
-
-        // Thêm lại các phần nội dung mới vào bảng news_content
-        for (const contentItem of news_content) {
-            await db.execute(
-                'INSERT INTO news_content (news_id, type, value) VALUES (?, ?, ?)',
-                [newsId, contentItem.type, contentItem.value]
-            );
-        }
 
         res.status(200).json({
             status: 200,
-            message: 'News updated successfully',
-            data: { id: newsId, title }
+            message: "News updated successfully",
+            data: { id: newsId, title, image_title }
         });
     } catch (error) {
-        res.status(500).json({
-            status: 500,
-            message: error.message,
-            data: null
-        });
+        console.error("Error updating news:", error);
+        res.status(500).json({ status: 500, message: error.message });
     }
 };
 const deleteNews = async (req, res) => {
     const newsId = req.params.id;
 
     try {
-        // Xóa các phần nội dung của tin tức
         await db.execute('DELETE FROM news_content WHERE news_id = ?', [newsId]);
 
-        // Xóa bài tin tức
         await db.execute('DELETE FROM news WHERE id = ?', [newsId]);
 
         res.status(200).json({

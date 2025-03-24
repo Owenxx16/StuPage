@@ -1,18 +1,26 @@
 const multer = require('multer');
 const path = require('path');
 
-// Cấu hình Multer để lưu trữ ảnh vào thư mục 'public/assets'
-const storage = multer.diskStorage({
+// Storage cho image_title (lưu vào src/public/assets)
+const storageTitle = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'src/public/assets');  // Thư mục lưu trữ ảnh
+        cb(null, 'src/public/assets');
     },
     filename: (req, file, cb) => {
-        // Tạo tên file bằng cách sử dụng thời gian hiện tại và phần mở rộng của file
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 
-// Kiểm tra loại file (chỉ cho phép ảnh)
+// Storage cho ảnh trong news_content (lưu vào src/public/content_news)
+const storageContent = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'src/public/content_news');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
 const fileFilter = (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
@@ -25,11 +33,18 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-// Cấu hình Multer
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 },  // Giới hạn kích thước tệp là 5MB
+// Middleware cho news (single image)
+const uploadNews = multer({
+    storage: storageTitle,
+    limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: fileFilter
-});
+}).single('image');
 
-module.exports = upload;
+// Middleware cho news_content (array of images)
+const uploadNewsContent = multer({
+    storage: storageContent,
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: fileFilter
+}).array('images', 10);
+
+module.exports = { uploadNews, uploadNewsContent };
