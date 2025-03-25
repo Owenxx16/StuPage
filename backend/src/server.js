@@ -14,6 +14,8 @@ const NewsRouter = require('./routes/NewsRoute.js');
 const NewsContentRouter = require('./routes/News_contentRoute.js');
 const ChuongTrinhRouter = require('./routes/ChuongTrinh.js');
 const CamNangRouter = require('./routes/CamNang.js');
+const SuKienRouter = require('./routes/SuKien.js');
+const LienKetRouter = require('./routes/LienKet.js');
 // Middleware to enable CORS
 app.use(cors());
 // Middleware to parse JSON requests
@@ -28,6 +30,8 @@ app.use('/daotao', DaoTaoRouter);
 app.use('/giangday', GiangDayRouter);
 app.use('/chuongtrinh', ChuongTrinhRouter);
 app.use('/camnang', CamNangRouter);
+app.use('/sukien', SuKienRouter);
+app.use('/lienket',LienKetRouter);
 
 //app.use('/news', newsRouter);
 app.use('/categories', categoriesRouter);
