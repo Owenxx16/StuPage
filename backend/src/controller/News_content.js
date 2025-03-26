@@ -1,7 +1,5 @@
 const db = require('../config/database');
 
-
-
 const createNewsContent = async (req, res) => {
     const { news_id } = req.body;
     const uploadedFiles = req.files || [];
