@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STU University Website Clone - Preview</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    header {
+      background-color: #1b436d;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .logo img {
+      height: 60px;
+      margin-right: 1rem;
+    }
+    .logo-text {
+      text-align: left;
+    }
+    .logo-text h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+    .logo-text span {
+      display: block;
+    }
+    .university {
+      color: #f8f9f8;
+    }
+    .tech {
+      color: #c02c3c;
+      font-size: 1.7rem;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .intro {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .screenshots {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .screenshot {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: white;
+    }
+    .screenshot img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .screenshot-info {
+      padding: 1rem;
+    }
+    .screenshot-info h3 {
+      margin-top: 0;
+      color: #1b436d;
+    }
+    footer {
+      background-color: #1b436d;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    .tech-stack {
+      background-color: #f0f4f8;
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .tech-stack h2 {
+      color: #1b436d;
+      margin-top: 0;
+    }
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .tech-item {
+      background-color: white;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    @media (min-width: 768px) {
+      .screenshots {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-text">
+        <h1>
+          <span class="university">STU WEBSITE CLONE</span>
+          <span class="tech">Demo & Preview</span>
+        </h1>
+      </div>
+    </div>
+    <p>A replica of the Saigon Technology University website built with modern web technologies</p>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Project Overview</h2>
+      <p>This project is a clone of the Saigon Technology University (STU) website, built using Next.js, React, and TailwindCSS. Below are screenshots of various sections we've implemented.</p>
+    </section>
+
+    <section class="tech-stack">
+      <h2>Technologies Used</h2>
+      <div class="tech-list">
+        <div class="tech-item">Next.js 15</div>
+        <div class="tech-item">React 18</div>
+        <div class="tech-item">TailwindCSS</div>
+        <div class="tech-item">ShadCN UI</div>
+        <div class="tech-item">TypeScript</div>
+      </div>
+    </section>
+
+    <section class="screenshots">
+      <div class="screenshot">
+        <img src="screenshot-header.png" alt="Header Section">
+        <div class="screenshot-info">
+          <h3>Header & Navigation</h3>
+          <p>The header includes the school logo, language switcher, search functionality, and a comprehensive dropdown navigation menu.</p>
+        </div>
+      </div>
+
+      <div class="screenshot">
+        <img src="screenshot-hero.png" alt="Hero Carousel">
+        <div class="screenshot-info">
+          <h3>Hero Carousel</h3>
+          <p>Interactive carousel featuring information about admissions and school events, matching the original STU design.</p>
+        </div>
+      </div>
+
+      <div class="screenshot">
+        <img src="screenshot-news.png" alt="News Section">
+        <div class="screenshot-info">
+          <h3>News Sections</h3>
+          <p>News and updates from the university presented in a clean, card-based layout with tabs for different categories.</p>
+        </div>
+      </div>
+
+      <div class="screenshot">
+        <img src="screenshot-footer.png" alt="Footer Section">
+        <div class="screenshot-info">
+          <h3>Footer</h3>
+          <p>Comprehensive footer with links to departments, admissions information, and contact details.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 - STU University Website Clone - Educational Project</p>
+  </footer>
+</body>
+</html>

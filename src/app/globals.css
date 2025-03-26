@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    /* STU primary colors */
+    --stu-blue: 211 70% 29%;       /* #1b436d */
+    --stu-red: 353 53% 44%;         /* #ac364b */
+    --stu-yellow: 44 49% 49%;       /* #b89f3f */
+
+    /* UI colors */
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 211 70% 29%;  /* STU Blue */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 353 53% 44%;  /* STU Red */
+    --secondary-foreground: 0 0% 98%;
+    --muted: 210 20% 84%;   /* Light blue-gray */
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 44 49% 49%;   /* STU Yellow/Gold */
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 210 20% 84%;
+    --input: 240 5.9% 90%;
+    --ring: 211 70% 29%;
+    --radius: 0.25rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 211 70% 29%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 353 53% 44%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 210 20% 84%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 44 49% 49%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+/* STU specific custom classes */
+@layer components {
+  .stu-container {
+    @apply max-w-7xl mx-auto px-4;
+  }
+
+  .stu-header-top {
+    @apply bg-primary text-white text-sm py-1;
+  }
+
+  .stu-main-nav {
+    @apply bg-primary text-white py-2;
+  }
+
+  .stu-nav-item {
+    @apply px-3 py-2 hover:bg-primary/80 transition-colors;
+  }
+
+  .stu-section-title {
+    @apply bg-primary text-white text-sm font-bold p-2 uppercase;
+  }
+
+  .stu-section {
+    @apply mb-6;
+  }
+
+  .stu-news-item {
+    @apply border-b border-muted py-2;
+  }
+
+  .stu-footer {
+    @apply bg-primary text-white py-8;
+  }
+}

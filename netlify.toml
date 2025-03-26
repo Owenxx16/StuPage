@@ -1,0 +1,16 @@
+[images]
+  remote_images = ["https://ext.same-assets.com/"]
+
+[build]
+  command = "bun run build && mkdir -p public/media && cp -r .next/static public/ && cp -r public .next/"
+  publish = ".next"
+  functions = "netlify/functions"
+
+[build.environment]
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
