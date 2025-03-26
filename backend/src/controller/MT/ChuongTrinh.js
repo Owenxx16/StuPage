@@ -18,7 +18,7 @@ const createChuongTrinhController = async (req, res) => {
     return res.status(400).json({ message: 'Missing required fields' });
   }
   try {
-    const result = await connection.execute('INSERT INTO chuongtrinh (title, updated_at	, content, link) VALUES (?, ?, ?, ?)', [title, update, content, link]);
+    const result = await connection.execute('INSERT INTO chuongtrinh (title, updated_at, content, link) VALUES (?, ?, ?, ?)', [title, update, content, link]);
     res.json({ success: true, message: 'Insert thành công' });
   } catch (error) {
     res.status(500).json({ message: error.message });
