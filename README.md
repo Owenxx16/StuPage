@@ -1,23 +1,25 @@
-STU PAGE
+# STU PAGE
 
-# TIÊU CHÍ
+---
 
-Dự án web được thực hiện bởi các thành viên trong nhóm với mục đích cùng nhau viết về trang web của trường đại học Công Nghệ Sài Gòn - STU
+# CRITERIA
+
+The web project is carried out by group members with the purpose of writing together about the website of Saigon University of Technology—STU.
 
 ---
 
 # PLAN
 
-Dự án được chia thành 2 thành viên xử lý back-end và 2 thành viên xử lý front-end
+The project is divided into 2 members handling the back-end and 2 members handling the front-end.
 
 ---
 
 # ACTIVE
 
-Mọi người có thể vào và cập nhật về tin tức mới nhất liên quan đến các hoạt động tổ chức trong trường
+Everyone can access and update the latest news related to the activities organized in the school.
 
 ---
 
-# Guidline
+# Guideline
 
-Để clone và sử dụng trang web stu, ở src/config có 1 file tên stufake1.sql bạn có thể import nó vào phpmyadmin hoặc mysql (chỉnh sửa 1 tí mới dùng đc) và cần setting lại file .env mới có thể sử dụng được nhé.
+To clone and use the stu website, in src/config there is a file named stufake1.sql; you can import it into phpMyAdmin or MySQL (edit a little to use) and need to reset the .env file to be able to use it.
