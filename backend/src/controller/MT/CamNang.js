@@ -23,10 +23,10 @@ const getAllCamNangController = async (req, res) => {
 
 const createCamNangController = async (req, res) => {
   const update = new Date();
-  const { head, body, footer, altimg, link } = req.body;
+  const { head, body, footer, altimg, link, category_id } = req.body;
   const image = req.file.filename;
   try {
-    const result = await connection.execute('INSERT INTO camnang (updated_at, head, body, footer, altimg, image, link) VALUES (?, ?, ?, ?, ?, ?, ?)', [update, head, body, footer, altimg, image, link]);
+    const result = await connection.execute('INSERT INTO camnang (updated_at, head, body, footer, altimg, image, link, category_id ) VALUES (?, ?, ?, ?, ?, ?, ?,?)', [update, head, body, footer, altimg, image, link,category_id ]);
     res.json({ success: true, message: 'Insert thành công' });
   } catch (error) {
     res.status(500).json({ message: error.message });

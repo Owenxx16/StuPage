@@ -16,6 +16,7 @@ const ChuongTrinhRouter = require('./routes/ChuongTrinh.js');
 const CamNangRouter = require('./routes/CamNang.js');
 const SuKienRouter = require('./routes/SuKien.js');
 const LienKetRouter = require('./routes/LienKet.js');
+const HocThiRouter = require('./routes/HocThi.js');
 // Middleware to enable CORS
 app.use(cors());
 // Middleware to parse JSON requests
@@ -32,6 +33,7 @@ app.use('/chuongtrinh', ChuongTrinhRouter);
 app.use('/camnang', CamNangRouter);
 app.use('/sukien', SuKienRouter);
 app.use('/lienket',LienKetRouter);
+app.use('/hocthi', HocThiRouter);
 
 //app.use('/news', newsRouter);
 app.use('/categories', categoriesRouter);
