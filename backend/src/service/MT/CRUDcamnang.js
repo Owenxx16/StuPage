@@ -13,8 +13,8 @@ const getCamNangById = async (id) => {
 }
 
 
-const updateCamNang = async (id, updated, head,body,footer,altimg,image, link) => {
-  let [results, fields] = await connection.execute('Update camnang set updated_at = ?, head = ?, body = ?, footer = ?, altimg = ?, image = ?, link = ? where id = ?', [updated, head, body, footer, altimg, image, link, id]);
+const updateCamNang = async (id, updated, head,body,footer,altimg,image, link,category_id ) => {
+  let [results, fields] = await connection.execute('Update camnang set updated_at = ?, head = ?, body = ?, footer = ?, altimg = ?, image = ?, link = ?, category_id = ? where id = ?', [updated, head, body, footer, altimg, image, link, category_id, id]);
   return results;
 }
 

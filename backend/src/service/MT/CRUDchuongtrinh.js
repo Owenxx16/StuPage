@@ -12,8 +12,8 @@ const getChuongTrinhById = async (id) => {
 }
 
 
-const updateChuongTrinh = async (id, updated, content, link) => {
-  let [results, fields] = await connection.execute('Update chuongtrinh set updated_at , content , link where id = ?', [updated, content, link, id]);
+const updateChuongTrinh = async (id, updated, content, link, category_id) => {
+  let [results, fields] = await connection.execute('Update chuongtrinh set updated_at = ?  , content = ? , link = ? , category_id = ?  where id = ?', [updated, content, link, category_id, id]);
   return results;
 }
 
