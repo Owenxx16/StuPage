@@ -45,10 +45,10 @@ const getCamNangByIdController = async (req, res) => {
 
 const updateCamNangController = async (req, res) => {
   const id = req.params.id;
-  const { head, body, footer, altimg, link } = req.body;
+  const { head, body, footer, altimg, link,category_id  } = req.body;
   const image = req.file.filename;
   try {
-    const result = await updateCamNang(id, head, body, footer, altimg, image, link);
+    const result = await updateCamNang(id, head, body, footer, altimg, image, link,category_id );
     res.json({ success: true, message: 'Update thành công' });
   } catch (error) {
     res.status(500).json({ message: error.message });
