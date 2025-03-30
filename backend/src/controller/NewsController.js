@@ -9,7 +9,7 @@ const createNews = async (req, res) => {
 
     try {
         const mainImageFile = req.file;
-        const image_title = mainImageFile ? `assets/${mainImageFile.filename}` : null;
+        const image_title = mainImageFile ? `assets/${mainImageFile.filename}` : (req.body.image_title || '');
 
         const [newsResult] = await db.execute(
             `INSERT INTO news 
@@ -17,11 +17,10 @@ const createNews = async (req, res) => {
              VALUES (?, ?, ?, ?, ?, ?)`,
             [title, content, category_id, user_id, image_title, new Date()]
         );
-
         res.status(201).json({
             status: 201,
             message: "News created successfully",
-            data: { id: newsResult.insertId, title, image_title }
+            data: { id: newsResult.insertId, title, image_title}
         });
     } catch (error) {
         console.error("Error creating news:", error);
