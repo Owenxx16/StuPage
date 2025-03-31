@@ -147,7 +147,7 @@ const getUser = async (req, res) => {
 
     try {
         const [result] = await db.execute(
-            'SELECT id, username, email, created_at FROM users WHERE id = ?',
+            'SELECT id, username, email FROM users WHERE id = ?',
             [userId]
         );
 

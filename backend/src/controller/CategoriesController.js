@@ -48,7 +48,7 @@ const createCategories = async (req, res) => {
         const { name } = req.body;
         const [result] = await db.execute('INSERT INTO categories (name) VALUES (?)', [name]);
 
-        const data = { id: result.insertId, name: name, created_at: new Date() }; 
+        const data = { id: result.insertId, name: name };
         res.status(201).json({
             status: 201,
             message: 'Category created successfully',
@@ -65,7 +65,7 @@ const createCategories = async (req, res) => {
 
 const updateCategory = async (req, res) => {
     const categoryId = req.params.id;
-    const { name } = req.body;  
+    const { name } = req.body;
 
     try {
         const [result] = await db.execute('UPDATE categories SET name = ? WHERE id = ?', [name, categoryId]);

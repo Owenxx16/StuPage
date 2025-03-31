@@ -13,14 +13,14 @@ const createNews = async (req, res) => {
 
         const [newsResult] = await db.execute(
             `INSERT INTO news 
-                (title, content, category_id, user_id, image_title, created_at) 
-             VALUES (?, ?, ?, ?, ?, ?)`,
-            [title, content, category_id, user_id, image_title, new Date()]
+                (title, content, category_id, user_id, image_title) 
+             VALUES (?, ?, ?, ?, ?)`,
+            [title, content, category_id, user_id, image_title]
         );
         res.status(201).json({
             status: 201,
             message: "News created successfully",
-            data: { id: newsResult.insertId, title, image_title}
+            data: { id: newsResult.insertId, title, image_title }
         });
     } catch (error) {
         console.error("Error creating news:", error);
@@ -173,7 +173,7 @@ const createNewsContent = async (req, res) => {
 const getAllNews = async (req, res) => {
     try {
         const [newsResults] = await db.execute(
-            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username AS author, news.created_at FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id'
+            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username AS author FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id'
         );
 
         for (const news of newsResults) {
@@ -201,7 +201,7 @@ const getNewsById = async (req, res) => {
 
     try {
         const [newsResult] = await db.execute(
-            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username AS author, news.created_at FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id WHERE news.id = ?', [newsId]
+            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username AS author FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id WHERE news.id = ?', [newsId]
         );
 
         if (newsResult.length === 0) {
@@ -246,9 +246,9 @@ const updateNews = async (req, res) => {
         await db.execute(
             `UPDATE news 
              SET title = ?, content = ?, category_id = ?, user_id = ?, 
-                 image_title = IFNULL(?, image_title), updated_at = ? 
+                 image_title = IFNULL(?, image_title) 
              WHERE id = ?`,
-            [title, content, category_id, user_id, image_title, new Date(), newsId]
+            [title, content, category_id, user_id, image_title, newsId]
         );
 
         res.status(200).json({
