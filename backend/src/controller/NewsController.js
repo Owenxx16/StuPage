@@ -178,7 +178,7 @@ const getAllNews = async (req, res) => {
 
         for (const news of newsResults) {
             const [contentResults] = await db.execute(
-                'SELECT type, value FROM news_content WHERE news_id = ?', [news.id]
+                'SELECT id, type, value FROM news_content WHERE news_id = ?', [news.id]
             );
             news.content_details = contentResults;
         }
@@ -240,6 +240,18 @@ const updateNews = async (req, res) => {
     }
 
     try {
+        const [newsResult] = await db.execute(
+            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username AS author FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id WHERE news.id = ?', [newsId]
+        );
+
+        if (newsResult.length === 0) {
+            return res.status(404).json({
+                status: 404,
+                message: 'News not found',
+                data: null
+            });
+        }
+
         const mainImageFile = req.file;
         const image_title = mainImageFile ? `assets/${mainImageFile.filename}` : null;
 
@@ -265,6 +277,18 @@ const deleteNews = async (req, res) => {
     const newsId = req.params.id;
 
     try {
+        const [newsResult] = await db.execute(
+            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username AS author FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id WHERE news.id = ?', [newsId]
+        );
+
+        if (newsResult.length === 0) {
+            return res.status(404).json({
+                status: 404,
+                message: 'News not found',
+                data: null
+            });
+        }
+
         await db.execute('DELETE FROM news_content WHERE news_id = ?', [newsId]);
 
         await db.execute('DELETE FROM news WHERE id = ?', [newsId]);
