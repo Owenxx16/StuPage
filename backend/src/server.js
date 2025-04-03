@@ -3,6 +3,7 @@ const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 const cors = require('cors');
+const path = require("path");
 const khoaRouter = require('./routes/khoa.js');
 const feedbackRouter = require('./routes/feedback.js');
 const PhongBRouter = require('./routes/phongban.js');
@@ -22,7 +23,8 @@ app.use(cors());
 // Middleware to parse JSON requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, "public")));
+
 // Routes
 app.use('/khoa', khoaRouter);
 app.use('/feedback', feedbackRouter);
@@ -32,7 +34,7 @@ app.use('/giangday', GiangDayRouter);
 app.use('/chuongtrinh', ChuongTrinhRouter);
 app.use('/camnang', CamNangRouter);
 app.use('/sukien', SuKienRouter);
-app.use('/lienket',LienKetRouter);
+app.use('/lienket', LienKetRouter);
 app.use('/hocthi', HocThiRouter);
 
 //app.use('/news', newsRouter);
