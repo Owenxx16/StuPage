@@ -73,7 +73,7 @@ const createNewsContent = async (req, res) => {
 
 const updateNewsContent = async (req, res) => {
     const { id } = req.params;
-    const { news_id, type, value } = req.body;
+    const {type, value } = req.body;
     const contentFiles = req.files || [];
 
     try {
