@@ -196,6 +196,53 @@ const getAllNews = async (req, res) => {
         });
     }
 };
+
+const getNewsByCategory = async (req, res) => {
+    const categoryId = req.params.id; 
+    try {
+        const [newsResult] = await db.execute(
+            `SELECT news.id, news.title, news.content, news.image_title, 
+                    categories.name AS category_name, 
+                    users.username AS author,
+                    news.created_at, news.updated_at
+             FROM news 
+             JOIN categories ON news.category_id = categories.id 
+             JOIN users ON news.user_id = users.id 
+             WHERE news.category_id = ?`,
+            [categoryId]
+        );
+
+        if (newsResult.length === 0) {
+            return res.status(404).json({
+                status: 404,
+                message: "Không tìm thấy tin tức trong danh mục này",
+                data: null
+            });
+        }
+
+
+        for (const news of newsResult) {
+            const [contentResults] = await db.execute(
+                'SELECT id, type, value FROM news_content WHERE news_id = ?', [news.id]
+            );
+            news.content_details = contentResults;
+        }
+
+        res.status(200).json({
+            status: 200,
+            message: "Lấy danh sách tin tức thành công",
+            data: newsResult
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: error.message,
+            data: null
+        });
+    }
+};
+
+
 const getNewsById = async (req, res) => {
     const newsId = req.params.id;
 
@@ -357,5 +404,9 @@ module.exports = {
     updateNews,
     deleteNews,
     createNewsContent,
+<<<<<<< HEAD
     getNewsByCategoryId
+=======
+    getNewsByCategory
+>>>>>>> 205a95677d238740f78a163e163da0b785fb1e52
 };

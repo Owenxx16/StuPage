@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const {uploadNews} = require('../config/upload');
-const { createNews, getAllNews, getNewsById, updateNews, deleteNews } = require('../controller/NewsController');
+const { createNews, getAllNews, getNewsById, updateNews, deleteNews,getNewsByCategory } = require('../controller/NewsController');
 
 
 
@@ -17,6 +17,7 @@ const multerErrorHandler = (err, req, res, next) => {
     next(err);
 };
 router.get('/', getAllNews);
+router.get('/category/:id',getNewsByCategory);
 router.get('/:id', getNewsById);
 router.put('/:id', uploadNews, multerErrorHandler, updateNews);
 router.delete('/:id', deleteNews);
