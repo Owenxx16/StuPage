@@ -1,6 +1,9 @@
 const connection = require('../../config/database');
 const {getAllCamNang, getCamNangById, updateCamNang, deleteCamNang} = require('../../service/MT/CRUDcamnang');
 const multer = require('multer');
+
+
+// Set up multer for file upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './public/assets');
@@ -10,8 +13,13 @@ const storage = multer.diskStorage({
   }
 })
 
+// Set up multer for file upload
+// const upload = multer({ dest: './public/assets' });
 const upload = multer({ storage: storage });
 
+
+// Set up the route for file upload
+// router.post('/upload', upload.single('image'), (req, res) => {
 const getAllCamNangController = async (req, res) => {
   try {
     const camnang = await getAllCamNang();
