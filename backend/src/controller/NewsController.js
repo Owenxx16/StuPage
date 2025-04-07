@@ -406,9 +406,6 @@ module.exports = {
     updateNews,
     deleteNews,
     createNewsContent,
-<<<<<<< HEAD
     getNewsByCategoryId
-=======
     getNewsByCategory
->>>>>>> 205a95677d238740f78a163e163da0b785fb1e52
 };
