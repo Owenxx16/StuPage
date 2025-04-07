@@ -220,6 +220,14 @@ const getNewsByCategory = async (req, res) => {
             });
         }
 
+
+        for (const news of newsResult) {
+            const [contentResults] = await db.execute(
+                'SELECT id, type, value FROM news_content WHERE news_id = ?', [news.id]
+            );
+            news.content_details = contentResults;
+        }
+
         res.status(200).json({
             status: 200,
             message: "Lấy danh sách tin tức thành công",
