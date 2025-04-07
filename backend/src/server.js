@@ -21,6 +21,7 @@ const HocThiRouter = require('./routes/HocThi.js');
 const TuyenSinhRouter = require('./routes/TuyenSinh.js');
 const SinhVienRouter = require('./routes/SinhVien.js');
 const DoanTheRouter = require('./routes/DoanThe.js');
+const NewCategoryRouter = require('./routes/NewsCategory.js');
 // Middleware to enable CORS
 app.use(cors());
 // Middleware to parse JSON requests
@@ -42,6 +43,7 @@ app.use('/hocthi', HocThiRouter);
 app.use('/tuyensinh', TuyenSinhRouter);
 app.use('/sinhvien', SinhVienRouter);
 app.use('/doanthe', DoanTheRouter);
+app.use('/newcategory', NewCategoryRouter);
 
 //app.use('/news', newsRouter);
 app.use('/categories', categoriesRouter);

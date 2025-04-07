@@ -1,7 +1,7 @@
 const db = require('../config/database');
 
 const createNews = async (req, res) => {
-    const { title, content, category_id, user_id } = req.body;
+    const { title, content, category_id, user_id, category_news_id } = req.body;
 
     if (!title || !content || !category_id || !user_id) {
         return res.status(400).json({ status: 400, message: "Missing required fields" });
@@ -13,9 +13,9 @@ const createNews = async (req, res) => {
 
         const [newsResult] = await db.execute(
             `INSERT INTO news 
-                (title, content, category_id, user_id, image_title) 
-             VALUES (?, ?, ?, ?, ?)`,
-            [title, content, category_id, user_id, image_title]
+                (title, content, category_id, user_id, image_title, category_news_id) 
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [title, content, category_id, user_id, image_title, category_news_id || null]
         );
         res.status(201).json({
             status: 201,
@@ -173,7 +173,7 @@ const createNewsContent = async (req, res) => {
 const getAllNews = async (req, res) => {
     try {
         const [newsResults] = await db.execute(
-            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username AS author FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id'
+            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username, category_news.name AS news_category AS author FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id LEFT JOIN category_news ON news.category_news_id = category_news.id'
         );
 
         for (const news of newsResults) {
@@ -307,11 +307,55 @@ const deleteNews = async (req, res) => {
     }
 };
 
+const getNewsByCategoryId = async (req, res) => {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ status: 400, message: "Missing category id" });
+    }
+    try {
+      // Lấy tất cả thông tin của tin tức (news, categories, users, category_news)
+      const [results] = await db.execute(
+        `SELECT n.*, 
+                c.name AS category_name, 
+                u.username AS author, 
+                cn.name AS category_news_name
+         FROM news n
+         JOIN categories c ON n.category_id = c.id
+         JOIN users u ON n.user_id = u.id
+         LEFT JOIN category_news cn ON n.category_news_id = cn.id
+         WHERE cn.id = ?`,
+        [id]
+      );
+    
+      if (results.length === 0) {
+        return res.status(404).json({ status: 404, message: "No news found for this category" });
+      }
+      
+      // Lấy thông tin chi tiết (news_content) cho từng bản tin
+      for (const news of results) {
+        const [contentResults] = await db.execute(
+          'SELECT id, type, value FROM news_content WHERE news_id = ?',
+          [news.id]
+        );
+        news.content_details = contentResults;
+      }
+      
+      res.status(200).json({
+        status: 200,
+        message: "News fetched successfully",
+        data: results
+      });
+    } catch (error) {
+      res.status(500).json({ status: 500, message: error.message });
+    }
+  };
+
 module.exports = {
     createNews,
     getAllNews,
     getNewsById,
     updateNews,
     deleteNews,
-    createNewsContent
+    createNewsContent,
+    getNewsByCategoryId
 };

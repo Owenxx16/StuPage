@@ -1,6 +1,5 @@
 
 const connection = require('../../config/database');
-const { get } = require('../../routes/HocThi');
 const {getAllDoanThe, getDTById, updateDT, deleteDT } = require('../../service/MT/CRUDdoanthe');
 
 const getAllDTController = async (req, res) => {
