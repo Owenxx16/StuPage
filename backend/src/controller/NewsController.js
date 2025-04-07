@@ -374,6 +374,7 @@ const getNewsByCategoryId = async (req, res) => {
         [id]
       );
     
+        // Kiểm tra xem có tin tức nào không
       if (results.length === 0) {
         return res.status(404).json({ status: 404, message: "No news found for this category" });
       }
@@ -387,13 +388,14 @@ const getNewsByCategoryId = async (req, res) => {
         news.content_details = contentResults;
       }
       
+        // Trả về kết quả
       res.status(200).json({
         status: 200,
         message: "News fetched successfully",
         data: results
       });
     } catch (error) {
-      res.status(500).json({ status: 500, message: error.message });
+      res.status(500).json({ status: false, message: error.message });
     }
   };
 
