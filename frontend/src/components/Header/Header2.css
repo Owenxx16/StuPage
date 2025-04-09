@@ -1,0 +1,62 @@
+.H2_container {
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    text-align: center;
+    margin: 10px 200px;
+  }
+  
+  .column-1, .column-2 {
+    display: flex;
+    justify-content: left;  /* Căn giữa ảnh trong các cột */
+    align-items: center;      /* Căn giữa ảnh theo chiều dọc */
+    height: 100%;             /* Đảm bảo các cột chiếm toàn bộ chiều cao */
+    position: relative;       /* Cần thiết nếu bạn muốn ảnh phủ hết cột */
+  }
+  .column-1 {
+    flex: 0 0 60%;  /* Cột 1 chiếm 70% chiều rộng */
+  }
+  
+  .column-2 {
+    flex: 0 0 10%;  /* Cột 2 chiếm 10% chiều rộng */
+  }
+  
+  .column-3 {
+    flex: 0 0 30%;  /* Cột 3 chiếm 20% chiều rộng */
+    display: flex;   /* Chuyển cột 3 thành một flex container */
+    flex-direction: column;  /* Sắp xếp các phần tử con thành các hàng */
+    justify-content: right;
+  }
+  
+  .column-3 > div {
+    flex: 1;  /* Mỗi phần tử con trong column-3 chiếm cùng một chiều cao */
+  }
+
+  .search_container {
+    position: relative;
+    width: 100%; /* Đặt chiều rộng cố định hoặc dùng 100% nếu cần */
+  }
+  
+  .input_search {
+    width: 100%;
+    padding: 10px 0px 10px 15px; /* Chừa khoảng trống bên phải cho icon */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .icon_search {
+    position: absolute;
+    height: 50%;
+    right: 0px;
+    top: 35%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none; /* Tránh icon bị click thay vì input */
+  }
+  
+  .stuCode_container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+  }

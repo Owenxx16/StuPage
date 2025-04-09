@@ -1,0 +1,25 @@
+* {
+    padding: 0%;
+    margin: 0%;
+}
+
+.content-container{
+    display: flex;
+    max-width: 1200px;
+    margin: auto;
+    gap: 15px;
+}
+
+.left-column{
+    flex: 2.5;
+}
+.right-column{
+    flex: 1;
+    box-sizing: border-box;
+}
+
+.see-all-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 15px;
+}

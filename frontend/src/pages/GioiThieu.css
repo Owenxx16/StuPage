@@ -1,0 +1,41 @@
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .news-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  
+  .news-image img {
+    width: 200px;
+    border-radius: 8px;
+  }
+  
+  .news-date {
+    color: gray;
+    font-size: 14px;
+  }
+  
+  .news-title {
+    color: #0056b3;
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  
+  .news-desc {
+    color: #333;
+  }
+  
+  .news-link {
+    color: red;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .news-link:hover {
+    text-decoration: underline;
+  }

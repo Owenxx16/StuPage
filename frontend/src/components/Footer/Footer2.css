@@ -1,0 +1,8 @@
+.F2_container {
+    display: grid;
+    grid-template-columns:10% 70% 30%;
+    grid-auto-rows: auto; /* Tự động tạo hàng cho mỗi item */
+    gap: 10px;
+    width: 70%; /* 100% - (15% * 2) = 70% */
+    margin: 0 auto; /* Căn giữa */
+}

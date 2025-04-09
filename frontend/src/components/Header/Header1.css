@@ -1,0 +1,22 @@
+.H1_container {
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    background-color: #F2FAFE;
+    margin: 10px;
+    padding-top: 5px;
+}
+ul {
+    list-style-type: none; /* Loại bỏ dấu chấm của danh sách */
+    text-align: right;
+    padding: 0;
+  }
+  
+  li {
+    display: inline-block; /* Hoặc inline */
+    margin-right: 20px; /* Khoảng cách giữa các phần tử */
+  }
+
+  a {
+    text-decoration: none; /* Bỏ dấu gạch dưới */
+  }

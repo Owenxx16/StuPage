@@ -1,0 +1,21 @@
+.slideshow-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    height: 450px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.slideshow-slider {
+  display: flex;
+  transition: transform 0.8s ease-in-out;
+  width: 100%;
+}
+
+.slide-image {
+  flex-shrink: 0;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}

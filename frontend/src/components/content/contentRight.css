@@ -1,0 +1,49 @@
+.right-container {
+    width: 100%;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+    margin-bottom: 10px;
+}
+
+.section-header .icon {
+    margin-right: 8px;
+}
+
+.link-list {
+    list-style: none;
+    padding: 0;
+}
+
+.link-list li {
+    margin-bottom: 5px;
+    text-align: center;
+    padding: 8px;
+    border-radius: 3px;
+    width: 80%;
+}
+
+.link-list li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+}
+
+.video-container {
+    text-align: center;
+}

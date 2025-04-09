@@ -1,0 +1,62 @@
+.F1_container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 cột bằng nhau */
+    grid-auto-rows: auto; /* Tự động tạo hàng cho mỗi item */
+    gap: 10px;
+    width: 70%; /* 100% - (15% * 2) = 70% */
+    margin: 0 auto; /* Căn giữa */
+}
+
+.link {
+    color: white;
+    text-decoration: none; /* Bỏ gạch chân mặc định */
+    position: relative;
+    font-size: 15px;
+    padding-left: 10px;
+}
+
+ 
+.link::after {
+    content: ">";
+    position: absolute;
+    bottom: -5px; /* Đưa xuống dưới chữ */
+    font-size: 20px; /* Điều chỉnh kích thước */
+    color: #fff; /* Màu dấu lớn */
+    opacity: 0; /* Ẩn mặc định */
+    transition: opacity 0.3s ease-in-out;
+
+}
+
+.link::before {
+    left: -15px; /* Đưa dấu ">" về bên trái */
+}
+
+.link::after {
+    content: "<";
+    right: -15px; /* Đưa dấu "<" về bên phải */
+}
+
+.link:hover::before,
+.link:hover::after {
+    opacity: 1; /* Hiện khi hover */
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.column > ul {
+    text-align: left;
+    padding-left: 30px;
+}
+
+.hr_footer{
+    margin: 10px;
+    margin: 10px;
+    background-color: white;
+}
+
+.column > ul > li {
+    padding-top: 10px;
+    
+}
