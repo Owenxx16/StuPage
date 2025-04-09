@@ -1,11 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Máy chủ: 127.0.0.1:3306
--- Thời gian đã tạo: Th4 03, 2025 lúc 02:53 PM
--- Phiên bản máy phục vụ: 8.2.0
--- Phiên bản PHP: 8.2.13
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -17,15 +10,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Cơ sở dữ liệu: `stufake2`
---
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `camnang`
---
+
 
 DROP TABLE IF EXISTS `camnang`;
 CREATE TABLE IF NOT EXISTS `camnang` (
@@ -42,11 +29,7 @@ CREATE TABLE IF NOT EXISTS `camnang` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `categories`
---
 
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
@@ -56,20 +39,14 @@ CREATE TABLE IF NOT EXISTS `categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Đang đổ dữ liệu cho bảng `categories`
---
+
 
 INSERT INTO `categories` (`id`, `name`, `created_at`) VALUES
 (1, 'thong bao', '2025-03-21 20:03:15'),
 (2, 'Tin tức', '2025-03-21 20:04:36'),
 (3, 'Tin tức', '2025-03-21 20:07:00');
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `chuongtrinh`
---
 
 DROP TABLE IF EXISTS `chuongtrinh`;
 CREATE TABLE IF NOT EXISTS `chuongtrinh` (
@@ -81,18 +58,12 @@ CREATE TABLE IF NOT EXISTS `chuongtrinh` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Đang đổ dữ liệu cho bảng `chuongtrinh`
---
+
 
 INSERT INTO `chuongtrinh` (`id`, `title`, `updated_at`, `content`, `link`) VALUES
 (1, 'Chương trình đào tạo đại học khóa 2022 - Ngành Thiết kế Công nghiệp', '2025-03-24 14:42:20', 'Chương trình đào tạo đại học khóa 2022 - Ngành Thiết kế Công nghiệp', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/09_CTDT%20TKCN%202022_update_compressed.pdf');
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `daotao`
---
 
 DROP TABLE IF EXISTS `daotao`;
 CREATE TABLE IF NOT EXISTS `daotao` (
@@ -101,18 +72,12 @@ CREATE TABLE IF NOT EXISTS `daotao` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Đang đổ dữ liệu cho bảng `daotao`
---
+
 
 INSERT INTO `daotao` (`id`, `nametrain`) VALUES
 (1, 'Biểu đồ Giảng Dạy & Học Tập');
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `department`
---
 
 DROP TABLE IF EXISTS `department`;
 CREATE TABLE IF NOT EXISTS `department` (
@@ -121,18 +86,11 @@ CREATE TABLE IF NOT EXISTS `department` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Đang đổ dữ liệu cho bảng `department`
---
 
 INSERT INTO `department` (`id`, `tenPB`) VALUES
 (1, 'Phòng đào tạo');
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `doanthe`
---
 
 DROP TABLE IF EXISTS `doanthe`;
 CREATE TABLE IF NOT EXISTS `doanthe` (
@@ -141,11 +99,7 @@ CREATE TABLE IF NOT EXISTS `doanthe` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `feedback`
---
 
 DROP TABLE IF EXISTS `feedback`;
 CREATE TABLE IF NOT EXISTS `feedback` (
@@ -158,18 +112,12 @@ CREATE TABLE IF NOT EXISTS `feedback` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Đang đổ dữ liệu cho bảng `feedback`
---
+
 
 INSERT INTO `feedback` (`id`, `name`, `phone`, `address`, `title`, `content`) VALUES
 (1, 'Quoc Vinh', '0908030201', 'Quan 7', 'rất thích trường học', 'trường sạch, rau xanh');
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `giangday`
---
 
 DROP TABLE IF EXISTS `giangday`;
 CREATE TABLE IF NOT EXISTS `giangday` (
@@ -180,11 +128,7 @@ CREATE TABLE IF NOT EXISTS `giangday` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `khoa`
---
 
 DROP TABLE IF EXISTS `khoa`;
 CREATE TABLE IF NOT EXISTS `khoa` (
@@ -193,18 +137,12 @@ CREATE TABLE IF NOT EXISTS `khoa` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Đang đổ dữ liệu cho bảng `khoa`
---
+
 
 INSERT INTO `khoa` (`id`, `name`) VALUES
 (1, 'Công Nghệ Thông Tin');
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `lienket`
---
 
 DROP TABLE IF EXISTS `lienket`;
 CREATE TABLE IF NOT EXISTS `lienket` (
@@ -215,11 +153,7 @@ CREATE TABLE IF NOT EXISTS `lienket` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `news`
---
 
 DROP TABLE IF EXISTS `news`;
 CREATE TABLE IF NOT EXISTS `news` (
@@ -236,9 +170,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Đang đổ dữ liệu cho bảng `news`
---
+
 
 INSERT INTO `news` (`id`, `title`, `content`, `image_title`, `category_id`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 'Trường Đại học Công nghệ Sài Gòn hợp tác với Viện XYZ', 'Nội dung bài viết', '1742566028122.jpg', 1, 1, '2025-03-21 14:07:08', '2025-03-21 21:07:08'),
@@ -271,11 +203,7 @@ INSERT INTO `news` (`id`, `title`, `content`, `image_title`, `category_id`, `use
 (29, 'Tdasdasdasdasdas', 'Nội dung bài viết', 'assets/1742800197854.jpg', 2, 1, '2025-03-24 07:09:58', '2025-03-24 14:09:57'),
 (30, 'test', 'Nội dung bài viết', 'assets/1742803499663.jpg', 2, 1, '2025-03-24 08:05:00', '2025-03-24 15:04:59');
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `news_content`
---
 
 DROP TABLE IF EXISTS `news_content`;
 CREATE TABLE IF NOT EXISTS `news_content` (
@@ -287,9 +215,7 @@ CREATE TABLE IF NOT EXISTS `news_content` (
   KEY `news_id` (`news_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Đang đổ dữ liệu cho bảng `news_content`
---
+
 
 INSERT INTO `news_content` (`id`, `news_id`, `type`, `value`) VALUES
 (1, 1, 'text', 'Nội dung chi tiết bài viết'),
@@ -325,11 +251,7 @@ INSERT INTO `news_content` (`id`, `news_id`, `type`, `value`) VALUES
 (32, 30, 'text', 'hu'),
 (34, 30, 'image', 'assets/content_news/1742805709211.png');
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `refresh_tokens`
---
 
 DROP TABLE IF EXISTS `refresh_tokens`;
 CREATE TABLE IF NOT EXISTS `refresh_tokens` (
@@ -341,18 +263,12 @@ CREATE TABLE IF NOT EXISTS `refresh_tokens` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Đang đổ dữ liệu cho bảng `refresh_tokens`
---
+
 
 INSERT INTO `refresh_tokens` (`id`, `user_id`, `refresh_token`, `created_at`) VALUES
 (1, 2, '9e208abce8d7650861e366ef6cb6f8e9f2a53b9626fc3cf0cb0e7c818f97093c008ca16a6d22d7cf', '2025-03-28 07:31:46');
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `sinhvien`
---
 
 DROP TABLE IF EXISTS `sinhvien`;
 CREATE TABLE IF NOT EXISTS `sinhvien` (
@@ -361,11 +277,7 @@ CREATE TABLE IF NOT EXISTS `sinhvien` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `tuyensinh`
---
 
 DROP TABLE IF EXISTS `tuyensinh`;
 CREATE TABLE IF NOT EXISTS `tuyensinh` (
@@ -374,11 +286,7 @@ CREATE TABLE IF NOT EXISTS `tuyensinh` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
---
--- Cấu trúc bảng cho bảng `users`
---
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
@@ -391,34 +299,24 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Đang đổ dữ liệu cho bảng `users`
---
+
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`) VALUES
 (1, 'admin123', 'admin@admin.com', '$2b$10$hvKSn2Ydl8ccnvWIX1xz1OWWpGBf8chQcbbmJz.UrC5gXLivNvzqe', '2025-03-21 20:35:58'),
 (2, 'admin123', 'admin1@admin.com', '$2b$10$2v24p63DrLs2rh3HKlPqTeJZkm1VrE1eo.BHYclXFX42qxkoOpfPG', '2025-03-28 13:37:32');
 
---
--- Các ràng buộc cho các bảng đã đổ
---
 
---
--- Các ràng buộc cho bảng `news`
---
+
+
 ALTER TABLE `news`
   ADD CONSTRAINT `news_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `news_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
---
--- Các ràng buộc cho bảng `news_content`
---
+
 ALTER TABLE `news_content`
   ADD CONSTRAINT `news_content_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `news` (`id`) ON DELETE CASCADE;
 
---
--- Các ràng buộc cho bảng `refresh_tokens`
---
+
 ALTER TABLE `refresh_tokens`
   ADD CONSTRAINT `refresh_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
