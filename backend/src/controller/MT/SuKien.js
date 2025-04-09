@@ -4,12 +4,12 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/assets');
+    cb(null, 'src/public/assets'); // đảm bảo folder này tồn tại
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
   }
-})
+});
 const upload = multer({ storage: storage });
 
 const getAllSuKienController = async(req,res) => {
@@ -23,7 +23,7 @@ const getAllSuKienController = async(req,res) => {
 
 const createSuKienController = async(req,res) => {
   try{
-    let hinh = req.file.filename;
+    const hinh = req.file ? req.file.filename : null;
     let ngay = new Date().getDate();
     let {diachi, noidung} = req.body;
 
@@ -48,14 +48,14 @@ const getSuKienByIdController = async(req,res) => {
 const updateSuKienByController = async(req,res) => {
   try{
     let id = req.params.id;
-    let image = req.file.filename;
+    const image = req.file ? req.file.filename : null;
     let ngay = new Date().getDate();
     let {diachi,noidung} = req.body;
 
     const sukien = await updateSuKien(id,image,ngay,diachi,noidung);
-    res.message({update: 'upadate successful'})
+    res.json({update: 'upadate successful'})
   }catch(error){
-    res.status(500).message({message: error.message});
+    res.status(500).json({message: error.message});
   }
 }
 
@@ -64,9 +64,9 @@ const deleteSuKienController = async(req,res) => {
   try{
     let id = req.params.id;
     const sukien = await deleteSuKien(id);
-    res.message({message: 'Xoa thanh cong'});
+    res.json({message: 'Xoa thanh cong'});
   }catch(error){
-    res.status(500).message({message: error.message})
+    res.status(500).json({message: error.message})
   }
 }
 

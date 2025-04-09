@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3306
--- Thời gian đã tạo: Th4 03, 2025 lúc 02:53 PM
+-- Thời gian đã tạo: Th4 09, 2025 lúc 01:59 PM
 -- Phiên bản máy phục vụ: 8.2.0
 -- Phiên bản PHP: 8.2.13
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `stufake2`
+-- Cơ sở dữ liệu: `stufake4`
 --
 
 -- --------------------------------------------------------
@@ -68,6 +68,26 @@ INSERT INTO `categories` (`id`, `name`, `created_at`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `category_news`
+--
+
+DROP TABLE IF EXISTS `category_news`;
+CREATE TABLE IF NOT EXISTS `category_news` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `category_news`
+--
+
+INSERT INTO `category_news` (`id`, `name`) VALUES
+(1, 'Tin nổi bật');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `chuongtrinh`
 --
 
@@ -79,14 +99,44 @@ CREATE TABLE IF NOT EXISTS `chuongtrinh` (
   `content` varchar(255) NOT NULL,
   `link` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `chuongtrinh`
 --
 
 INSERT INTO `chuongtrinh` (`id`, `title`, `updated_at`, `content`, `link`) VALUES
-(1, 'Chương trình đào tạo đại học khóa 2022 - Ngành Thiết kế Công nghiệp', '2025-03-24 14:42:20', 'Chương trình đào tạo đại học khóa 2022 - Ngành Thiết kế Công nghiệp', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/09_CTDT%20TKCN%202022_update_compressed.pdf');
+(1, 'Chương trình đào tạo đại học khóa 2022 - Ngành Thiết kế Công nghiệp', '2025-03-24 14:42:20', 'Chương trình đào tạo đại học khóa 2022 - Ngành Thiết kế Công nghiệp', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/09_CTDT%20TKCN%202022_update_compressed.pdf'),
+(2, 'Chương trình đào tạo đại học khóa 2021 - Ngành Thiết kế Công nghiệp', '0000-00-00 00:00:00', 'Chương trình đào tạo đại học khóa 2021 - Ngành Thiết kế Công nghiệp', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/09_CTDT%20TKCN%20KHOA%202021_compressed.pdf'),
+(3, 'Chương trình đào tạo đại học khóa 2020 - Ngành Thiết kế Công nghiệp', '0000-00-00 00:00:00', 'Chương trình đào tạo đại học khóa 2020 - Ngành Thiết kế Công nghiệp', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/QD_CTDT_09_TKCN_KHOA%202020_compressed.pdf'),
+(4, 'Chương trình đào tạo đại học khóa 2023 - Ngành Thiết kế Công nghiệp', '0000-00-00 00:00:00', 'Chương trình đào tạo đại học khóa 2023 - Ngành Thiết kế Công nghiệp', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/CTDT%20Design.pdf'),
+(5, 'Chương trình đào tạo đại học khóa 2023 - Ngành Kỹ thuật Xây dựng', '0000-00-00 00:00:00', 'Chương trình đào tạo đại học khóa 2023 - Ngành Kỹ thuật Xây dựng', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/CTDT%20KTCT.pdf'),
+(6, 'Chương trình đào tạo đại học khóa 2023 - Ngành Quản trị Kinh doanh', '0000-00-00 00:00:00', 'Chương trình đào tạo đại học khóa 2023 - Ngành Quản trị Kinh doanh', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/CTDT%20QTKD.pdf'),
+(7, 'Chương trình đào tạo đại học khóa 2023 - Ngành Công nghệ Thực phẩm', '0000-00-00 00:00:00', 'Chương trình đào tạo đại học khóa 2023 - Ngành Công nghệ Thực phẩm', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/CTDT%20CNTP.pdf'),
+(8, 'Chương trình đào tạo đại học khóa 2023 - Ngành Công nghệ Thông tin', '0000-00-00 00:00:00', 'Chương trình đào tạo đại học khóa 2023 - Ngành Công nghệ Thông tin', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/CTDT%20CNTT.pdf'),
+(9, 'Chương trình đào tạo đại học khóa 2023 - Ngành Công nghệ Kỹ thuật Điện tử Viễn thông', '0000-00-00 00:00:00', 'Chương trình đào tạo đại học khóa 2023 - Ngành Công nghệ Kỹ thuật Điện tử Viễn thông', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/CTDT%20%C4%90i%E1%BB%87n%20t%E1%BB%AD%20VT.pdf'),
+(10, 'Sơ đồ mối liên hệ và tiến trình đào tạo các môn học trong chương trình đào tạo - Ngành Công nghệ Thông tin', '0000-00-00 00:00:00', 'Ngành Công nghệ Thông tin', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CTDT_SO%20DO%20MOI%20LIEN%20HE_50%20CNTT_2019.pdf'),
+(11, 'Sơ đồ mối liên hệ và tiến trình đào tạo các môn học trong chương trình đào tạo - Ngành Công nghệ Thực phẩm', '0000-00-00 00:00:00', 'Ngành Công nghệ Thực phẩm', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CTDT_SO%20DO%20MOI%20LIEN%20HE_60%20CNTP_2019.pdf'),
+(12, 'Sơ đồ mối liên hệ và tiến trình đào tạo các môn học trong chương trình đào tạo - Ngành Quản trị Kinh doanh - Chuyên ngành Quản trị Kinh doanh - Tổng hợp', '0000-00-00 00:00:00', 'Ngành Quản trị Kinh doanh - Chuyên ngành Quản trị Kinh doanh - Tổng hợp', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CTDT_SO%20DO%20MOI%20LIEN%20HE_70%20QTKD%20TONG%20HOP_2019.pdf'),
+(13, 'Sơ đồ mối liên hệ và tiến trình đào tạo các môn học trong chương trình đào tạo - Ngành Quản trị Kinh doanh - Chuyên ngành Quản trị Marketing', '0000-00-00 00:00:00', 'Ngành Quản trị Kinh doanh - Chuyên ngành Quản trị Marketing', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CTDT_SO%20DO%20MOI%20LIEN%20HE_72%20QTKD%20MARKETING_2019.pdf'),
+(14, 'Sơ đồ mối liên hệ và tiến trình đào tạo các môn học trong chương trình đào tạo - Ngành Quản trị Kinh doanh - Chuyên ngành Quản trị Tài chính', '0000-00-00 00:00:00', 'Ngành Quản trị Kinh doanh - Chuyên ngành Quản trị Tài chính', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CTDT_SO%20DO%20MOI%20LIEN%20HE_73%20QTKD%20TAI%20CHINH_2019.pdf'),
+(15, 'Sơ đồ mối liên hệ và tiến trình đào tạo các môn học trong chương trình đào tạo - Ngành Kỹ thuật Xây dựng', '0000-00-00 00:00:00', 'Ngành Kỹ thuật Xây dựng', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CTDT_SO%20DO%20MOI%20LIEN%20HE_80%20KTXD_2019.pdf'),
+(16, 'Sơ đồ mối liên hệ và tiến trình đào tạo các môn học trong chương trình đào tạo - Ngành Thiết kế Công nghiệp - Chuyên ngành Thiết kế Sản phẩm', '0000-00-00 00:00:00', 'Ngành Thiết kế Công nghiệp - Chuyên ngành Thiết kế Sản phẩm', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CTDT_SO%20DO%20MOI%20LIEN%20HE_91%20TKCN_TKSP_2019.pdf'),
+(17, 'Sơ đồ mối liên hệ và tiến trình đào tạo các môn học trong chương trình đào tạo - Ngành Thiết kế Công nghiệp - Chuyên ngành Thiết kế Thời trang', '0000-00-00 00:00:00', 'Ngành Thiết kế Công nghiệp - Chuyên ngành Thiết kế Thời trang', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CTDT_SO%20DO%20MOI%20LIEN%20HE_92%20TKCN_TKTT_2019.pdf'),
+(18, 'Sơ đồ mối liên hệ và tiến trình đào tạo các môn học trong chương trình đào tạo - Ngành Thiết kế Công nghiệp - Chuyên ngành Thiết kế Đồ họa', '0000-00-00 00:00:00', 'Ngành Thiết kế Công nghiệp - Chuyên ngành Thiết kế Đồ họa', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CTDT_SO%20DO%20MOI%20LIEN%20HE_93%20TKCN_TKDH_2019.pdf'),
+(19, 'Sơ đồ mối liên hệ và tiến trình đào tạo các môn học trong chương trình đào tạo - Ngành Thiết kế Công nghiệp - Chuyên ngành Thiết kế Nội thất', '0000-00-00 00:00:00', 'Ngành Thiết kế Công nghiệp - Chuyên ngành Thiết kế Nội thất', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CTDT_SO%20DO%20MOI%20LIEN%20HE_94%20TKCN_TKNT_2019.pdf'),
+(20, 'Chương trình đào tạo cao đẳng - Ngành Thiết kế Công nghiệp', '0000-00-00 00:00:00', 'Chương trình đào tạo cao đẳng - Ngành Thiết kế Công nghiệp', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/TKCN_009.pdf'),
+(21, 'Chương trình đào tạo cao đẳng - Ngành Kỹ thuật Xây dựng', '0000-00-00 00:00:00', 'Chương trình đào tạo cao đẳng - Ngành Kỹ thuật Xây dựng', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/KTCT_008.pdf'),
+(22, 'Chương trình đào tạo cao đẳng - Ngành Quản trị Kinh doanh', '0000-00-00 00:00:00', 'Chương trình đào tạo cao đẳng - Ngành Quản trị Kinh doanh', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/QTKD_007.pdf'),
+(23, 'Chương trình đào tạo cao đẳng - Ngành Công nghệ Thực phẩm', '0000-00-00 00:00:00', 'Chương trình đào tạo cao đẳng - Ngành Công nghệ Thực phẩm', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CNTP_006.pdf'),
+(24, 'Chương trình đào tạo cao đẳng - Ngành Công nghệ Thông tin', '0000-00-00 00:00:00', 'Chương trình đào tạo cao đẳng - Ngành Công nghệ Kỹ thuật Điện tử - Viễn thông', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CNTT_005.pdf'),
+(25, 'Chương trình đào tạo cao đẳng - Ngành Công nghệ Kỹ thuật Điện tử - Viễn thông', '0000-00-00 00:00:00', 'Chương trình đào tạo cao đẳng - Ngành Công nghệ Kỹ thuật Điện tử - Viễn thông', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/DTVT_004.pdf'),
+(26, 'Chương trình đào tạo cao đẳng - Ngành Công nghệ Kỹ thuật Điện - Điện tử', '0000-00-00 00:00:00', 'Chương trình đào tạo cao đẳng - Ngành Công nghệ Kỹ thuật Điện - Điện tử', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/DDT_003.pdf'),
+(27, 'Chương trình đào tạo cao đẳng - Ngành Công nghệ Kỹ thuật Cơ - Điện tử', '0000-00-00 00:00:00', 'Chương trình đào tạo cao đẳng - Ngành Công nghệ Kỹ thuật Cơ - Điện tử', 'https://images.stu.edu.vn/ckfinder/uploads/links/files/Ph%C3%B2ng%20QLKH%26S%C4%90H/CK_001.pdf'),
+(28, 'Kế hoạch giảng dạy chi tiết khóa 2023 - Ngành Thiết kế Công nghiệp - Chuyên ngành Thiết kế Nội thất', '0000-00-00 00:00:00', 'Kế hoạch giảng dạy chi tiết khóa 2023 - Ngành Thiết kế Công nghiệp - Chuyên ngành Thiết kế Nội thất', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/CTDT%20Design%20(CN%20TKNT).pdf'),
+(29, 'Kế hoạch giảng dạy chi tiết khóa 2023 - Ngành Quản trị kinh doanh - Chuyên ngành Quản trị Marketing', '0000-00-00 00:00:00', 'Kế hoạch giảng dạy chi tiết khóa 2023 - Ngành Quản trị kinh doanh - Chuyên ngành Quản trị Marketing', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/CTDT%20QTKD%20(CN%20Mar).pdf'),
+(30, 'Kế hoạch giảng dạy chi tiết khóa 2023 - Ngành Quản trị kinh doanh - Chuyên ngành Quản trị Tài chính', '0000-00-00 00:00:00', 'Kế hoạch giảng dạy chi tiết khóa 2023 - Ngành Quản trị kinh doanh - Chuyên ngành Quản trị Tài chính', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/CTDT%20QTKD%20(CN%20TC).pdf'),
+(31, 'Kế hoạch giảng dạy chi tiết khóa 2023 - Ngành Quản trị kinh doanh - Chuyên ngành Quản trị tổng hợp', '0000-00-00 00:00:00', 'Kế hoạch giảng dạy chi tiết khóa 2023 - Ngành Quản trị kinh doanh - Chuyên ngành Quản trị tổng hợp', 'https://images.stu.edu.vn/ckfinder/uploads/links/Phong%20QLKH-SDH/quang/CTDT%20QTKD%20(CN%20QTKD).pdf');
 
 -- --------------------------------------------------------
 
@@ -173,12 +223,45 @@ INSERT INTO `feedback` (`id`, `name`, `phone`, `address`, `title`, `content`) VA
 
 DROP TABLE IF EXISTS `giangday`;
 CREATE TABLE IF NOT EXISTS `giangday` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `updated_at` datetime NOT NULL,
   `image` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `title` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `giangday`
+--
+
+INSERT INTO `giangday` (`id`, `updated_at`, `image`, `title`) VALUES
+(1, '0000-00-00 00:00:00', 'Biểu đồ giảng dạy & học tập năm học 2024 - 2025', 'bieudo-2024.jpg'),
+(2, '0000-00-00 00:00:00', 'Biểu đồ giảng dạy & học tập năm học 2024 - 2025', 'bieudo-2024.jpg'),
+(3, '0000-00-00 00:00:00', 'Biểu đồ giảng dạy & học tập năm học 2023- 2024', 'bieudo-2023jpg'),
+(4, '0000-00-00 00:00:00', 'Biểu đồ giảng dạy & học tập năm học 2022- 2023', 'bieudo-2022.jpg'),
+(5, '0000-00-00 00:00:00', 'Biểu đồ giảng dạy & học tập năm học 2021- 2022', 'bieudo-2021.jpg'),
+(6, '0000-00-00 00:00:00', 'Biểu đồ giảng dạy & học tập năm học 2020- 2021', 'bieudo-2020.jpg'),
+(7, '0000-00-00 00:00:00', 'Biểu đồ giảng dạy & học tập năm học 2019- 2020', 'bieudo-2019.jpg'),
+(8, '0000-00-00 00:00:00', 'Biểu đồ giảng dạy & học tập năm học 2018- 2019', 'bieudo-2018.jpg'),
+(9, '0000-00-00 00:00:00', 'Biểu đồ giảng dạy & học tập năm học 2016- 2017', 'bieudo-2017.jpg'),
+(10, '0000-00-00 00:00:00', 'Biểu đồ giảng dạy & học tập năm học 2017- 2019', 'bieudo-2016.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `hocthi`
+--
+
+DROP TABLE IF EXISTS `hocthi`;
+CREATE TABLE IF NOT EXISTS `hocthi` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `updated_at` datetime NOT NULL,
+  `content` text NOT NULL,
+  `image` text,
+  `description` text NOT NULL,
+  `link` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -213,7 +296,19 @@ CREATE TABLE IF NOT EXISTS `lienket` (
   `sponsor` varchar(255) NOT NULL,
   `link` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `lienket`
+--
+
+INSERT INTO `lienket` (`id`, `image`, `sponsor`, `link`) VALUES
+(1, 'bogd.jpeg', 'Bộ giáo dục và đào tạo', 'https://moet.gov.vn/Pages/home.aspx'),
+(2, 'bokh.jpeg', 'Bộ khoa học và công nghệ', 'https://www.most.gov.vn/vn/Pages/Trangchu.aspx'),
+(3, 'sokhcn.jpeg', 'Sở khoa học và công nghệ thành phố Hồ Chí Minh', 'https://www.dost.hochiminhcity.gov.vn/'),
+(4, 'troy.jpeg', 'Đại Học Troy', 'https://www.troy.edu/'),
+(5, 'trungtamtt.jpeg', 'Trung Tâm Thông Tin và Thống Kê KH CN', 'https://cesti.gov.vn/'),
+(6, 'vingroup.jpeg', 'Viện Nghiên Cứu Dữ liệu , đổi mới sáng tạo VINGROUP', 'https://vinif.org/');
 
 -- --------------------------------------------------------
 
@@ -360,6 +455,22 @@ CREATE TABLE IF NOT EXISTS `sinhvien` (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `sukien`
+--
+
+DROP TABLE IF EXISTS `sukien`;
+CREATE TABLE IF NOT EXISTS `sukien` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `image` varchar(255) NOT NULL,
+  `ngay` datetime NOT NULL,
+  `diachi` varchar(255) NOT NULL,
+  `noidung` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 

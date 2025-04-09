@@ -4,12 +4,12 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/assets');
+    cb(null, 'src/public/assets'); // đảm bảo folder này tồn tại
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
   }
-})
+});
 const upload = multer({ storage: storage });
 
 
@@ -24,13 +24,24 @@ const getAllLienKetController = async(req,res) => {
 
 const createLienKetController = async(req,res) => {
   try{
-    let image = req.file.filename;
-    let {sponsor, link} = req.body;
+    let image = req.file ? req.file.filename : null;
 
-    let sukien = await connection.execute("Insert into lienket (image,sponsor,link) VALUES (?,?,?)", [image,sponsor,link]);
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "Missing file: image is required" });
+    }
+
+    const { sponsor, link } = req.body;
+    if (!sponsor || !link) {
+      return res.status(400).json({ success: false, message: "Missing required fields: sponsor and/or link" });
+    }
+
+    const [sukien] = await connection.execute(
+      "INSERT INTO lienket (image, sponsor, link) VALUES (?, ?, ?)",
+      [image, sponsor, link]
+    );
     res.json({ success: true, message: 'Insert thành công' });
   }catch(error){
-    res.status(500).message({message: error.message})
+    res.status(500).json({message: error.message})
   }
 }
 
@@ -48,13 +59,15 @@ const getLienKetByIdController = async(req,res) => {
 const updateLienKetController = async(req,res) =>{
   try{
     let id = req.params.id;
-    let image = req.file.filename;
+    let image = req.file ? req.file.filename : null;
     let {sponsor,link} = req.body;
+    sponsor = sponsor !== undefined ? sponsor : null;
+    link = link !== undefined ? link : null;
 
     let sukien = await updateLienKet(id,image,sponsor,link);
     res.json({success: true, message: "Cap nhat thanh cong"});
   }catch(error){
-    res.status(500).message({message: error.message});
+    res.status(500).json({message: error.message});
   }
 }
 

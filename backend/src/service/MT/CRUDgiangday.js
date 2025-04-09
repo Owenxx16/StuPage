@@ -10,8 +10,8 @@ const getGiangDayById = async (id) => {
   return results;
 }
 
-const updateGiangDay = async (id, upadate, image, title) => {
-  let [results, fields] = await connection.execute('Update giangday set updated_at = ?, image = ?, title = ? where id = ?', [upadate,image, title, id]);
+const updateGiangDay = async (id, image, title) => {
+  let [results, fields] = await connection.execute('Update giangday set image = ?, title = ? where id = ?', [image, title, id]);
   return results;
 }
 

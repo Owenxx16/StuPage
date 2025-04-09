@@ -173,7 +173,7 @@ const createNewsContent = async (req, res) => {
 const getAllNews = async (req, res) => {
     try {
         const [newsResults] = await db.execute(
-            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username, category_news.name AS news_category AS author FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id LEFT JOIN category_news ON news.category_news_id = category_news.id'
+            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username, category_news.name AS news_category[] FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id LEFT JOIN category_news ON news.category_news_id = category_news.id'
         );
 
         for (const news of newsResults) {

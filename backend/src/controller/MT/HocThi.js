@@ -2,12 +2,12 @@ const connection = require('../../config/database');
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/assets');
+    cb(null, 'src/public/assets'); // đảm bảo folder này tồn tại
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
   }
-})
+});
 
 const upload = multer({ storage: storage });
 
@@ -39,7 +39,7 @@ const getHocthiByIdController = async (req, res) => {
 const createHocthiController = async (req, res) => {
   const { content, description, link } = req.body;
   // Nếu sử dụng upload file thì có thể lấy image từ req.file.filename, ở đây giả sử nhận từ req.body.image
-  const image = req.file.filename || null;
+  const image = req.file ? req.file.filename : null;
   const updated_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
   
   // Kiểm tra các trường bắt buộc
