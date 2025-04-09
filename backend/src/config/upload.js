@@ -11,15 +11,18 @@ const storageTitle = multer.diskStorage({
     }
 });
 
-// Storage cho ảnh trong news_content (lưu vào src/public/content_news)
 const storageContent = multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: function (req, file, cb) {
+
+
         cb(null, 'src/public/content_news');
     },
-    filename: (req, file, cb) => {
+    filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
+
+
 
 const fileFilter = (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif/;
@@ -32,7 +35,11 @@ const fileFilter = (req, file, cb) => {
         cb(new Error('Only image files are allowed!'), false);
     }
 };
-
+const uploadTinyImage = multer({
+    storage: storageContent,
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter
+}).single('file');
 // Middleware cho news (single image)
 const uploadNews = multer({
     storage: storageTitle,
@@ -40,11 +47,6 @@ const uploadNews = multer({
     fileFilter: fileFilter
 }).single('image');
 
-// Middleware cho news_content (array of images)
-const uploadNewsContent = multer({
-    storage: storageContent,
-    limits: { fileSize: 5 * 1024 * 1024 },
-    fileFilter: fileFilter
-}).array('images', 10);
 
-module.exports = { uploadNews, uploadNewsContent };
+
+module.exports = { uploadNews, uploadTinyImage };
