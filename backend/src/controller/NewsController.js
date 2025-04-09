@@ -198,7 +198,7 @@ const getAllNews = async (req, res) => {
 };
 
 const getNewsByCategory = async (req, res) => {
-    const categoryId = req.params.id; 
+    const categoryId = req.params.id;
     try {
         const [newsResult] = await db.execute(
             `SELECT news.id, news.title, news.content, news.image_title, 
@@ -357,12 +357,12 @@ const deleteNews = async (req, res) => {
 const getNewsByCategoryId = async (req, res) => {
     const { id } = req.params;
     if (!id) {
-      return res.status(400).json({ status: 400, message: "Missing category id" });
+        return res.status(400).json({ status: 400, message: "Missing category id" });
     }
     try {
-      // Lấy tất cả thông tin của tin tức (news, categories, users, category_news)
-      const [results] = await db.execute(
-        `SELECT n.*, 
+        // Lấy tất cả thông tin của tin tức (news, categories, users, category_news)
+        const [results] = await db.execute(
+            `SELECT n.*, 
                 c.name AS category_name, 
                 u.username AS author, 
                 cn.name AS category_news_name
@@ -371,31 +371,31 @@ const getNewsByCategoryId = async (req, res) => {
          JOIN users u ON n.user_id = u.id
          LEFT JOIN category_news cn ON n.category_news_id = cn.id
          WHERE cn.id = ?`,
-        [id]
-      );
-    
-      if (results.length === 0) {
-        return res.status(404).json({ status: 404, message: "No news found for this category" });
-      }
-      
-      // Lấy thông tin chi tiết (news_content) cho từng bản tin
-      for (const news of results) {
-        const [contentResults] = await db.execute(
-          'SELECT id, type, value FROM news_content WHERE news_id = ?',
-          [news.id]
+            [id]
         );
-        news.content_details = contentResults;
-      }
-      
-      res.status(200).json({
-        status: 200,
-        message: "News fetched successfully",
-        data: results
-      });
+
+        if (results.length === 0) {
+            return res.status(404).json({ status: 404, message: "No news found for this category" });
+        }
+
+        // Lấy thông tin chi tiết (news_content) cho từng bản tin
+        for (const news of results) {
+            const [contentResults] = await db.execute(
+                'SELECT id, type, value FROM news_content WHERE news_id = ?',
+                [news.id]
+            );
+            news.content_details = contentResults;
+        }
+
+        res.status(200).json({
+            status: 200,
+            message: "News fetched successfully",
+            data: results
+        });
     } catch (error) {
-      res.status(500).json({ status: 500, message: error.message });
+        res.status(500).json({ status: 500, message: error.message });
     }
-  };
+};
 
 module.exports = {
     createNews,
