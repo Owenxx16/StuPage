@@ -14,5 +14,5 @@ const { getAllNavbar,
   router.delete('/:id', deleteNavbar);
 
 
-  router.get('/category/:navbarId', getNavbarByCategoryId);
+  router.get('/category/:navbar', getNavbarByCategoryId);
 module.exports = router;
