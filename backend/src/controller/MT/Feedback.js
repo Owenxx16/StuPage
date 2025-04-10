@@ -46,4 +46,14 @@ const createFeedbackController = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
 }
-module.exports = { getAllFeedbackController, getFeedbackByIdController, createFeedbackController, deleteFeedbackController };
+
+const getAllFeedBackByCategoryId = async (req, res) => {
+  const categoryId = req.params.categoryId;
+  try {
+    const feedback = await connection.execute('SELECT * FROM feedback WHERE category_id = ?', [categoryId]);
+    res.json(feedback[0]);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+module.exports = { getAllFeedbackController, getFeedbackByIdController, createFeedbackController, deleteFeedbackController, getAllFeedBackByCategoryId };

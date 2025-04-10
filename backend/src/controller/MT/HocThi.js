@@ -97,11 +97,22 @@ const deleteHocthiController = async (req, res) => {
   }
 };
 
+const getAllHocthiByCategoryId = async (req, res) => {
+  const categoryId = req.params.categoryId;
+  try {
+    const [rows] = await connection.execute('SELECT * FROM hocthi WHERE category_id = ?', [categoryId]);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   getAllHocthiController,
   getHocthiByIdController,
   createHocthiController,
   updateHocthiController,
   deleteHocthiController,
-  upload
+  upload,
+  getAllHocthiByCategoryId
 };
