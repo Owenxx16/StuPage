@@ -47,6 +47,8 @@ const createFeedbackController = async (req, res) => {
     }
 }
 
+// This function retrieves all feedback for a specific category by its ID
+// It uses the category ID from the request parameters to filter the feedback
 const getAllFeedBackByCategoryId = async (req, res) => {
   const categoryId = req.params.categoryId;
   try {
