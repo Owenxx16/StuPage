@@ -82,5 +82,16 @@ const deleteLienKetController = async(req,res)=> {
   }
 }
 
+const getAllLienKetByCategoryId = async(req,res) => {
+  const categoryId = req.params.categoryId;
+  try{
+    let sukien = await connection.execute("SELECT * FROM lienket WHERE category_id = ?", [categoryId]);
+    res.json(sukien[0]);
+  }catch(error){
+    res.status(500).message({message: error.message})
+  }
+}
 
-module.exports={getAllLienKetController,createLienKetController,getLienKetByIdController,updateLienKetController,deleteLienKetController,upload}
+
+
+module.exports={getAllLienKetController,createLienKetController,getLienKetByIdController,updateLienKetController,deleteLienKetController,upload, getAllLienKetByCategoryId}
