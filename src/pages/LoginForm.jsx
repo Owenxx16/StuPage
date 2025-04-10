@@ -1,55 +1,80 @@
-import React, { useState } from "react";
-import "./LoginForm.css";
+import React, { useState } from 'react';
+import './LoginForm.css';
+import axios from 'axios';
+import { Navigate, Route, useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+      console.log(">>> check email pass",{email,password});
     e.preventDefault();
-
-    // Kiểm tra email hợp lệ
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Email không hợp lệ!");
-      return;
+    try {
+      const res = await axios.post('https://stupage.onrender.com/user/login', {
+        email,
+        password,
+      });
+      if (res.data.status === 200) {
+        const { token, refreshToken } = res.data.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('refreshToken', refreshToken);
+        setMessage('Đăng nhập thành công!');
+        // redirect hoặc cập nhật context
+        navigate('/adminpage');
+      } else {
+        setMessage('Sai thông tin đăng nhập!');
+      }
+    } catch (err) {
+      setMessage('Lỗi đăng nhập!',err.value);
     }
-
-    // Kiểm tra mật khẩu không rỗng
-    if (password.length < 6) {
-      setError("Mật khẩu phải có ít nhất 6 ký tự!");
-      return;
-    }
-
-    setError(""); // Xóa lỗi nếu nhập đúng
-    alert("Đăng nhập thành công!");
   };
 
   return (
     <div className="login-container">
-      <h2>Đăng nhập</h2>
-      {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <label>Mật khẩu:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        <button type="submit" disabled={!email || !password}>
-          Đăng nhập
-        </button>
-      </form>
+      <div className="login-title">
+        <img src="../../src/assets/icon12.png" alt="icon" />
+        <h2>Đăng Nhập</h2>
+      </div>
+      <div className="login-box">
+        <div className="login-left">
+          <p className="login-info">
+            Bạn cần phải <span className="login-bold">Đăng Nhập</span> để truy cập nội dung
+          </p>
+          <form onSubmit={handleSubmit}>
+            <div className="login-field">
+              <label>👫 Tài khoản</label>
+              <input
+                type="email"
+                placeholder="Tài Khoản (*)"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="login-field">
+              <label>🔐 Mật khẩu</label>
+              <input
+                type="password"
+                placeholder="Mật Khẩu (*)"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="login-buttons">
+              <button className="btn-login" type="submit">Đăng nhập</button>
+              <button className="btn-reset" type="reset">Nhập lại</button>
+            </div>
+          </form>
+          <p className="forgot-password">Quên mật khẩu?</p>
+          {message && <p className="login-message">{message}</p>}
+        </div>
+        <div className="login-right">
+          <img src="../../src/assets/login-bg.png" alt="Login Visual" />
+        </div>
+      </div>
     </div>
   );
 };

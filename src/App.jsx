@@ -34,60 +34,86 @@ import Footer from "./components/Footer/Footer";
 import KDesign from "./pages/khoa/KDesign";
 import LoginForm from "./pages/LoginForm";
 import Header from "./components/Header/Header";
+import AdminPage from "./pages/admin/AdminPage";
+import PrivateRoute from "./pages/admin/PrivateRoute";
+import UserManagement from "./pages/admin/UserManagement";
+// ... các import khác
 
 function App() {
   return (
-    <>
     <BrowserRouter>
-      <Header/>
       <Routes>
-        {/*Trang chủ*/}
-        <Route path="/" element={<Home/>} />
-        {/*Giới thiệu*/}
-        <Route path="/gioi-thieu" element={<GioiThieu/>} />
-        {/*Đào tạo*/}  
-        <Route path="/bieu-do-giang-day-va-hoc-tap" element={<BdoGDHT/>} />
-        <Route path="/cam-nang" element={<CamNang/>} />
-        <Route path="/chuong-trinh-dao-tao" element={<CtrinhDtao/>} />
-        {/*Tuyển sinh*/}
-        <Route path="/huong-nghiep" element={<HuongNghiep/>} />
-        <Route path="/thong-tin-tuyen-sinh" element={<TtinTsinh/>} />
-        <Route path="/cau-hoi-tu-van" element={<ChoiTvan/>} />
-        <Route path="/trac-nghiem-chon-nghe" element={"https://stu.edu.vn/vi/285/trac-nghiem-chon-nghe.html"} />
-        <Route path="/trac-nghiem-iq" element={<TnghiemIQ/>} />
-        <Route path="/ban-do-den-stu" element={<BanDo/>} />
-        {/*Phòng ban*/}
-        <Route path="/phong-dao-tao" element={<PDaotao/>} />
-        <Route path="/phong-hc-ns-pc" element={<PHcNsPc/>} />
-        <Route path="/phong-qlkh-sdh" element={<GioiThieu/>} />
-        <Route path="/phong-kh-tc" element={<PKhoachTchinh/>} />
-        <Route path="/phong-ct-sv" element={<PCtacSvien/>} />
-        <Route path="/ban-thanh-tra" element={<BThanhTra/>} />
-        <Route path="/ban-kh-cb" element={<BanKhocCban/>} />
-        <Route path="/ban-db-cl-gd" element={<BDbClGd/>} />
-        {/*Khoa*/}
-        <Route path="/khoa-cn-tt" element={<KCngheTtin/>} />
-        <Route path="/khoa-kt-ct" element={<KKthuatCtrinh/>} />
-        <Route path="/khoa-cn-tp" element={<KCngheTpham/>} />
-        <Route path="/khoa-dien-dientu" element={<KDienDtu/>} />
-        <Route path="/khoa-co-khi" element={<KCoKhi/>} />
-        <Route path="/khoa-qt-kd" element={<KQtriKdoanh/>} />
-        <Route path="/khoa-design" element={<KDesign/>} />
-        {/*Liên hệ*/}
-        <Route path="/lien-he" element={<LienHe/>} />
-        {/*Sinh viên*/}
-        <Route path="/doan-thanh-nien" element={<DoanThanhNien/>} />
-        <Route path="/bieu-mau" element={<BieuMau/>} />
-        <Route path="/huong-dan" element={<HuongDan/>} />
-        <Route path="/hoc-bong" element={<HocBong/>} />
-        {/*Tạp chí*/}
-        <Route path="/tap-chi" element={<TapChi/>} />
-        {/*Đăng nhập*/}
-        <Route path="/login" element={<LoginForm/>} />
+        {/* Admin Page - KHÔNG có Header/Footer */}
+        <Route
+    path="/adminpage"
+    element={
+      <PrivateRoute>
+        <AdminPage />
+      </PrivateRoute>
+    }
+      >
+        <Route path="users" element={<UserManagement />} />
+        {/* <Route path="categories" element={<CategoryManagement />} />
+        <Route path="news" element={<NewsManagement />} />
+        <Route path="news-content" element={<NewsContentManagement />} /> */}
+    </Route>
+
+        {/* Các trang còn lại đều có Header/Footer */}
+        <Route
+          path="*"
+          element={
+            <>
+              <Header />
+              <Routes>
+                {/*Trang chủ*/}
+                <Route path="/" element={<Home />} />
+                <Route path="/gioi-thieu" element={<GioiThieu />} />
+                {/*Đào tạo*/}  
+                <Route path="/bieu-do-giang-day-va-hoc-tap" element={<BdoGDHT />} />
+                <Route path="/cam-nang" element={<CamNang />} />
+                <Route path="/chuong-trinh-dao-tao" element={<CtrinhDtao />} />
+                {/*Tuyển sinh*/}
+                <Route path="/huong-nghiep" element={<HuongNghiep />} />
+                <Route path="/thong-tin-tuyen-sinh" element={<TtinTsinh />} />
+                <Route path="/cau-hoi-tu-van" element={<ChoiTvan />} />
+                <Route path="/trac-nghiem-chon-nghe" element={<TnghiemCnghe />} />
+                <Route path="/trac-nghiem-iq" element={<TnghiemIQ />} />
+                <Route path="/ban-do-den-stu" element={<BanDo />} />
+                {/*Phòng ban*/}
+                <Route path="/phong-dao-tao" element={<PDaotao />} />
+                <Route path="/phong-hc-ns-pc" element={<PHcNsPc />} />
+                <Route path="/phong-qlkh-sdh" element={<GioiThieu />} />
+                <Route path="/phong-kh-tc" element={<PKhoachTchinh />} />
+                <Route path="/phong-ct-sv" element={<PCtacSvien />} />
+                <Route path="/ban-thanh-tra" element={<BThanhTra />} />
+                <Route path="/ban-kh-cb" element={<BanKhocCban />} />
+                <Route path="/ban-db-cl-gd" element={<BDbClGd />} />
+                {/*Khoa*/}
+                <Route path="/khoa-cn-tt" element={<KCngheTtin />} />
+                <Route path="/khoa-kt-ct" element={<KKthuatCtrinh />} />
+                <Route path="/khoa-cn-tp" element={<KCngheTpham />} />
+                <Route path="/khoa-dien-dientu" element={<KDienDtu />} />
+                <Route path="/khoa-co-khi" element={<KCoKhi />} />
+                <Route path="/khoa-qt-kd" element={<KQtriKdoanh />} />
+                <Route path="/khoa-design" element={<KDesign />} />
+                {/*Liên hệ*/}
+                <Route path="/lien-he" element={<LienHe />} />
+                {/*Sinh viên*/}
+                <Route path="/doan-thanh-nien" element={<DoanThanhNien />} />
+                <Route path="/bieu-mau" element={<BieuMau />} />
+                <Route path="/huong-dan" element={<HuongDan />} />
+                <Route path="/hoc-bong" element={<HocBong />} />
+                {/*Tạp chí*/}
+                <Route path="/tap-chi" element={<TapChi />} />
+                {/*Đăng nhập*/}
+                <Route path="/login" element={<LoginForm />} />
+              </Routes>
+              <Footer />
+            </>
+          }
+        />
       </Routes>
-      <Footer/>
     </BrowserRouter>
-    </>
   );
 }
 

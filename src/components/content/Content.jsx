@@ -25,7 +25,7 @@ const ContentPage = () => {
         fetchNewsData();
     }, []);
 
-    if (news.length === 0) return <p>Đang tải tin tức...</p>;
+    if (news.length === 0) return <p style={{margin:"10px"}}>Đang tải tin tức...</p>;
 
     return (
         <>

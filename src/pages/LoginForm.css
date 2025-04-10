@@ -1,50 +1,106 @@
 .login-container {
-    width: 300px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    text-align: center;
-    background: #f9f9f9;
-  }
-  
-  h2 {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin: 10px 0 5px;
-    font-weight: bold;
-  }
-  
-  input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  button:disabled {
-    background-color: #aaa;
-    cursor: not-allowed;
-  }
-  
-  .error {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-  
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.login-title {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #00b5f1;
+  margin-bottom: 15px;
+}
+
+.login-title img {
+  width: 30px;
+  margin-right: 10px;
+}
+
+.login-title h2 {
+  color: red;
+  font-weight: bold;
+}
+
+.login-box {
+  display: flex;
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 30px;
+  justify-content: space-between;
+}
+
+.login-left {
+  width: 60%;
+}
+
+.login-info {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #f16719;
+}
+
+.login-bold {
+  color: #00b5f1;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.login-field {
+  margin-bottom: 15px;
+}
+
+.login-field label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.login-field input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.login-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-login {
+  background-color: #00b5f1;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.btn-reset {
+  background-color: #f0b400;
+  color: black;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.forgot-password {
+  color: red;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.login-message {
+  margin-top: 10px;
+  color: red;
+}
+
+.login-right {
+  width: 35%;
+  text-align: right;
+}
+
+.login-right img {
+  max-width: 100%;
+  opacity: 0.8;
+}
