@@ -37,7 +37,7 @@ const getHocthiByIdController = async (req, res) => {
 
 // Tạo mới bản ghi
 const createHocthiController = async (req, res) => {
-  const { content, description, link } = req.body;
+  const { content, description, link, categoryId } = req.body;
   // Nếu sử dụng upload file thì có thể lấy image từ req.file.filename, ở đây giả sử nhận từ req.body.image
   const image = req.file ? req.file.filename : null;
   const updated_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -49,8 +49,8 @@ const createHocthiController = async (req, res) => {
   
   try {
     const [result] = await connection.execute(
-      'INSERT INTO hocthi (updated_at, content, image, description, link) VALUES (?, ?, ?, ?, ?)',
-      [updated_at, content, image, description, link]
+      'INSERT INTO hocthi (updated_at, content, image, description, link, category_id) VALUES (?, ?, ?, ?, ?, ?)',
+      [updated_at, content, image, description, link, categoryId]
     );
     res.json({ success: true, message: 'Insert thành công', id: result.insertId });
   } catch (error) {

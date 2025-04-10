@@ -30,14 +30,14 @@ const createLienKetController = async(req,res) => {
       return res.status(400).json({ success: false, message: "Missing file: image is required" });
     }
 
-    const { sponsor, link } = req.body;
+    const { sponsor, link, categoryId } = req.body;
     if (!sponsor || !link) {
       return res.status(400).json({ success: false, message: "Missing required fields: sponsor and/or link" });
     }
 
     const [sukien] = await connection.execute(
-      "INSERT INTO lienket (image, sponsor, link) VALUES (?, ?, ?)",
-      [image, sponsor, link]
+      "INSERT INTO lienket (image, sponsor, link, category_id) VALUES (?, ?, ?, ?)",
+      [image, sponsor, link , categoryId]
     );
     res.json({ success: true, message: 'Insert thành công' });
   }catch(error){

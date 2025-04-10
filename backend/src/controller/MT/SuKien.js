@@ -25,9 +25,9 @@ const createSuKienController = async(req,res) => {
   try{
     const hinh = req.file ? req.file.filename : null;
     let ngay = new Date().getDate();
-    let {diachi, noidung} = req.body;
+    let {diachi, noidung, categoryId} = req.body;
 
-    let [rows, fields] = await connection.execute('Insert into sukien (image,ngay,diachi,noidung) VALUES (?,?,?,?)', [hinh, ngay, diachi, noidung])
+    let [rows, fields] = await connection.execute('Insert into sukien (image,ngay,diachi,noidung,category_id) VALUES (?,?,?,?,?)', [hinh, ngay, diachi, noidung,categoryId])
     res.json({ success: true, message: 'Insert thành công' });
   }catch(error){
     res.status(500).json({message: error.message});
