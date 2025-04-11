@@ -48,12 +48,28 @@ const updateNewsContent = async (req, res) => {
             });
         }
 
-        await db.execute('UPDATE news_content SET content = ? WHERE id = ?', [content, id]);
+        if (rows[0].content === content) {
+            return res.status(200).json({
+                status: 200,
+                message: 'No change in content',
+                data: { id, content: rows[0].content }
+            });
+        }
+
+        const [updateResult] = await db.execute('UPDATE news_content SET content = ? WHERE id = ?', [content, id]);
+
+        if (updateResult.affectedRows === 0) {
+            return res.status(400).json({
+                status: 400,
+                message: 'Failed to update news content',
+                data: null
+            });
+        }
 
         res.status(200).json({
             status: 200,
             message: 'News content updated successfully',
-            data: { id, data }
+            data: { id, content }
         });
     } catch (error) {
         console.error('Error updating news content:', error);
