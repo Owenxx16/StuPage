@@ -37,6 +37,7 @@ import Header from "./components/Header/Header";
 import AdminPage from "./pages/admin/AdminPage";
 import PrivateRoute from "./pages/admin/PrivateRoute";
 import UserManagement from "./pages/admin/UserManagement";
+import CategoryManagement from "./pages/admin/CategoryManagement";
 // ... các import khác
 
 function App() {
@@ -53,8 +54,8 @@ function App() {
     }
       >
         <Route path="users" element={<UserManagement />} />
-        {/* <Route path="categories" element={<CategoryManagement />} />
-        <Route path="news" element={<NewsManagement />} />
+        <Route path="categories" element={<CategoryManagement />} />
+        {/* <Route path="news" element={<NewsManagement />} />
         <Route path="news-content" element={<NewsContentManagement />} /> */}
     </Route>
 

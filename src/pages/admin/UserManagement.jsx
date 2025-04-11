@@ -4,8 +4,11 @@ import "./UserManagement.css";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
-  const [formData, setFormData] = useState({ username: "", email: "" });
+  const [formData, setFormData] = useState({ username: "", email: "", password: "" });
   const [editingId, setEditingId] = useState(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchUsers();
@@ -22,9 +25,9 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("https://stupage.onrender.com/user", getAuthHeaders());
+      const res = await axios.get("https://stupage.onrender.com/user/getall", getAuthHeaders());
       const user = res.data.data;
-      setUsers(user ? [user] : []);
+      setUsers(Array.isArray(user) ? user : []);
     } catch (err) {
       console.error("Lỗi khi lấy danh sách người dùng:", err);
       setUsers([]);
@@ -35,16 +38,20 @@ const UserManagement = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleClear = () => {
+    setFormData({ username: "", email: "", password: "" });
+    setEditingId(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(`http://localhost:5000/api/users/${editingId}`, formData, getAuthHeaders());
+        await axios.put("https://stupage.onrender.com/user/updateUser", formData, getAuthHeaders());
       } else {
-        await axios.post("http://localhost:5000/api/users", formData, getAuthHeaders());
+        await axios.post("https://stupage.onrender.com/user/register", formData);
       }
-      setFormData({ username: "", email: "" });
-      setEditingId(null);
+      handleClear();
       fetchUsers();
     } catch (err) {
       console.error("Lỗi khi gửi dữ liệu:", err);
@@ -52,39 +59,58 @@ const UserManagement = () => {
   };
 
   const handleEdit = (user) => {
-    setFormData({ username: user.username, email: user.email });
+    setFormData({ username: user.username, email: user.email, password: "" });
     setEditingId(user.id);
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/users/${id}`, getAuthHeaders());
-      fetchUsers();
-    } catch (err) {
-      console.error("Lỗi khi xoá người dùng:", err);
+  // Pagination logic
+  const totalPages = Math.ceil(users.length / itemsPerPage);
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+  const currentUsers = users.slice(indexOfFirst, indexOfLast);
+
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
     }
   };
 
   return (
     <div className="admin-container">
-      <h2>Quản lý Người dùng</h2>
-      <form onSubmit={handleSubmit} className="admin-form">
-        <input
-          type="text"
-          name="username"
-          placeholder="Tên người dùng"
-          value={formData.username}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email người dùng"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <button type="submit">{editingId ? "Cập nhật" : "Thêm mới"}</button>
-      </form>
+      <h2 style={{ textAlign: "center", padding: "10px 10px 50px 10px" }}>
+        Quản lý Người dùng
+      </h2>
+
+      <div className="admin-form_container">
+        <form onSubmit={handleSubmit} className="admin-form">
+          <input
+            type="text"
+            name="username"
+            placeholder="Tên người dùng"
+            value={formData.username}
+            onChange={handleChange}
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email người dùng"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <button type="submit">{editingId ? "Cập nhật" : "Thêm mới"}</button>
+        </form>
+
+        <button className="btn_refresh" type="button" onClick={handleClear}>
+          Nhập lại
+        </button>
+      </div>
 
       <table className="admin-table">
         <thead>
@@ -96,19 +122,37 @@ const UserManagement = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {currentUsers.map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
               <td>{user.username}</td>
               <td>{user.email}</td>
               <td>
                 <button onClick={() => handleEdit(user)}>Sửa</button>
-                <button onClick={() => handleDelete(user.id)}>Xoá</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Pagination controls */}
+      <div className="pagination">
+        <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+          &lt;
+        </button>
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            onClick={() => goToPage(page)}
+            className={page === currentPage ? "active" : ""}
+          >
+            {page}
+          </button>
+        ))}
+        <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
+          &gt;
+        </button>
+      </div>
     </div>
   );
 };

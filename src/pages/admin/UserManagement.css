@@ -1,73 +1,141 @@
-.user-management-container {
-    padding: 20px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  
-  .user-management-container h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-  
-  .user-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .user-form input {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  
-  .user-form button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .user-form button:hover {
-    background-color: #0056b3;
-  }
-  
-  .user-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .user-table th,
-  .user-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  .user-table th {
-    background-color: #f4f4f4;
-  }
-  
-  .user-table button {
-    margin: 0 5px;
-    padding: 6px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .user-table .edit-btn {
-    background-color: #ffc107;
-  }
-  
-  .user-table .delete-btn {
-    background-color: #dc3545;
-    color: white;
-  }
-  
+.admin-container {
+  font-family: Arial, sans-serif;
+}
+
+.admin-form_container{
+  display: flex;
+  justify-content: center;
+}
+
+.admin-form {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 30px;
+}
+
+.admin-form input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+.admin-form button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn_refresh{
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #1890ff;
+  color: white;
+  margin: 0px 10px 20px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.admin-form button:hover {
+  background-color: #40a9ff;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: #fafafa;
+  font-weight: 600;
+}
+
+.admin-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.admin-table button {
+  background: none;
+  border: none;
+  color: #1890ff;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.admin-table button:hover {
+  text-decoration: underline;
+}
+
+.admin-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-right: 6px;
+}
+
+.tag-nice {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.tag-loser {
+  background-color: #fff1f0;
+  color: #f5222d;
+  border: 1px solid #ffa39e;
+}
+
+.tag-cool {
+  background-color: #e6fffb;
+  color: #13c2c2;
+  border: 1px solid #87e8de;
+}
+
+.tag-developer,
+.tag-teacher {
+  background-color: #f0f5ff;
+  color: #2f54eb;
+  border: 1px solid #adc6ff;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 6px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: none;
+  background-color: #eee;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button:hover {
+  background-color: #ccc;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
