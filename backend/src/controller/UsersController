@@ -42,6 +42,36 @@ const createUser = async (req, res) => {
     }
 };
 
+
+const getallusers = async (req, res) => {
+    try {
+        const [result] = await db.execute(
+            'SELECT * FROM users'
+        );
+
+        if (result.length === 0) {
+            return res.status(404).json({
+                status: 404,
+                message: 'No users found',
+                data: null
+            });
+        }
+
+        res.status(200).json({
+            status: 200,
+            message: 'Users found',
+            data: result
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: error.message,
+            data: null
+        });
+    }
+};
+
+
 const login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -232,5 +262,6 @@ module.exports = {
     getUser,
     login,
     logout,
-    refreshToken
+    refreshToken,
+    getallusers
 };
