@@ -1,7 +1,7 @@
 const db = require('../config/database');
 
 const createNews = async (req, res) => {
-    const { title, content, category_id, user_id, category_news_id } = req.body;
+    const { title, content, category_id, user_id } = req.body;
 
     if (!title || !content || !category_id || !user_id) {
         return res.status(400).json({ status: 400, message: "Missing required fields" });
@@ -13,9 +13,9 @@ const createNews = async (req, res) => {
 
         const [newsResult] = await db.execute(
             `INSERT INTO news 
-                (title, content, category_id, user_id, image_title, category_news_id) 
-             VALUES (?, ?, ?, ?, ?, ?)`,
-            [title, content, category_id, user_id, image_title, category_news_id || null]
+                (title, content, category_id, user_id, image_title) 
+             VALUES (?, ?, ?, ?, ?)`,
+            [title, content, category_id, user_id, image_title || null]
         );
         res.status(201).json({
             status: 201,
@@ -178,7 +178,7 @@ const getAllNews = async (req, res) => {
 
         for (const news of newsResults) {
             const [contentResults] = await db.execute(
-                'SELECT id, type, value FROM news_content WHERE news_id = ?', [news.id]
+                'SELECT id, content FROM news_content WHERE news_id = ?', [news.id]
             );
             news.content_details = contentResults;
         }
@@ -223,7 +223,7 @@ const getNewsByCategory = async (req, res) => {
 
         for (const news of newsResult) {
             const [contentResults] = await db.execute(
-                'SELECT id, type, value FROM news_content WHERE news_id = ?', [news.id]
+                'SELECT id, content FROM news_content WHERE news_id = ?', [news.id]
             );
             news.content_details = contentResults;
         }
@@ -260,7 +260,7 @@ const getNewsById = async (req, res) => {
         }
 
         const [contentResults] = await db.execute(
-            'SELECT type, value FROM news_content WHERE news_id = ?', [newsId]
+            'SELECT content FROM news_content WHERE news_id = ?', [newsId]
         );
 
         newsResult[0].content_details = contentResults;
@@ -381,7 +381,7 @@ const getNewsByCategoryId = async (req, res) => {
         // Lấy thông tin chi tiết (news_content) cho từng bản tin
         for (const news of results) {
             const [contentResults] = await db.execute(
-                'SELECT id, type, value FROM news_content WHERE news_id = ?',
+                'SELECT id, content FROM news_content WHERE news_id = ?',
                 [news.id]
             );
             news.content_details = contentResults;
