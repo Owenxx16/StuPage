@@ -1,9 +1,9 @@
 const db = require('../config/database');
 
 const createNews = async (req, res) => {
-    const { title, content, category_id, user_id } = req.body;
+    const { title, category_id, user_id } = req.body;
 
-    if (!title || !content || !category_id || !user_id) {
+    if (!title || !category_id || !user_id) {
         return res.status(400).json({ status: 400, message: "Missing required fields" });
     }
 
@@ -13,9 +13,9 @@ const createNews = async (req, res) => {
 
         const [newsResult] = await db.execute(
             `INSERT INTO news 
-                (title, content, category_id, user_id, image_title) 
-             VALUES (?, ?, ?, ?, ?)`,
-            [title, content, category_id, user_id, image_title || null]
+                (title, category_id, user_id, image_title) 
+             VALUES (?, ?, ?, ?)`,
+            [title, category_id, user_id, image_title || null]
         );
         res.status(201).json({
             status: 201,
@@ -173,7 +173,7 @@ const createNewsContent = async (req, res) => {
 const getAllNews = async (req, res) => {
     try {
         const [newsResults] = await db.execute(
-            'SELECT news.id, news.title, news.content, categories.id AS category_id, users.id as user_id FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id'
+            'SELECT news.id, news.title, categories.id AS category_id, users.id as user_id FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id'
         );
 
         for (const news of newsResults) {
@@ -201,7 +201,7 @@ const getNewsByCategory = async (req, res) => {
     const categoryId = req.params.id;
     try {
         const [newsResult] = await db.execute(
-            `SELECT news.id, news.title, news.content, news.image_title, 
+            `SELECT news.id, news.title, news.image_title, 
                     categories.id AS category_id, 
                     users.id AS user_id,
                     news.created_at, news.updated_at
@@ -248,7 +248,7 @@ const getNewsById = async (req, res) => {
 
     try {
         const [newsResult] = await db.execute(
-            'SELECT news.id, news.title, news.content, categories.id AS category_id, users.id AS user_id FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id WHERE news.id = ?', [newsId]
+            'SELECT news.id, news.title, categories.id AS category_id, users.id AS user_id FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id WHERE news.id = ?', [newsId]
         );
 
         if (newsResult.length === 0) {
@@ -280,15 +280,15 @@ const getNewsById = async (req, res) => {
 };
 const updateNews = async (req, res) => {
     const newsId = req.params.id;
-    const { title, content, category_id, user_id } = req.body;
+    const { title, category_id, user_id } = req.body;
 
-    if (!title || !content || !category_id || !user_id) {
+    if (!title || !category_id || !user_id) {
         return res.status(400).json({ status: 400, message: "Missing required fields" });
     }
 
     try {
         const [newsResult] = await db.execute(
-            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username AS author FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id WHERE news.id = ?', [newsId]
+            'SELECT news.id, news.title, categories.id AS category_id, users.id AS user_id FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id WHERE news.id = ?', [newsId]
         );
 
         if (newsResult.length === 0) {
@@ -304,10 +304,10 @@ const updateNews = async (req, res) => {
 
         await db.execute(
             `UPDATE news 
-             SET title = ?, content = ?, category_id = ?, user_id = ?, 
+             SET title = ?, category_id = ?, user_id = ?, 
                  image_title = IFNULL(?, image_title) 
              WHERE id = ?`,
-            [title, content, category_id, user_id, image_title, newsId]
+            [title, category_id, user_id, image_title, newsId]
         );
 
         res.status(200).json({
@@ -325,7 +325,7 @@ const deleteNews = async (req, res) => {
 
     try {
         const [newsResult] = await db.execute(
-            'SELECT news.id, news.title, news.content, categories.name AS category_name, users.username AS author FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id WHERE news.id = ?', [newsId]
+            'SELECT news.id, news.title,  categories.name AS category_name, users.username AS author FROM news JOIN categories ON news.category_id = categories.id JOIN users ON news.user_id = users.id WHERE news.id = ?', [newsId]
         );
 
         if (newsResult.length === 0) {
@@ -363,8 +363,8 @@ const getNewsByCategoryId = async (req, res) => {
         // Lấy tất cả thông tin của tin tức (news, categories, users, category_news)
         const [results] = await db.execute(
             `SELECT n.*, 
-                c.name AS category_name, 
-                u.username AS author, 
+                c.id AS category_id, 
+                u.id AS user_id, 
                 cn.name AS category_news_name
          FROM news n
          JOIN categories c ON n.category_id = c.id
