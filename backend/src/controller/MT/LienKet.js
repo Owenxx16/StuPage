@@ -1,6 +1,7 @@
 const connection = require('../../config/database');
-const {getAllLienKet,getLienKetById,updateLienKet,deleteLienKet} = require('../../service/MT/CRUDlienket');
+const { getAllLienKet, getLienKetById, updateLienKet, deleteLienKet } = require('../../service/MT/CRUDlienket');
 const multer = require('multer');
+const { sendSuccess, sendError } = require('../../utils/response');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -12,86 +13,85 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-
-const getAllLienKetController = async(req,res) => {
-  try{
-    let sukien = await getAllLienKet();
-    res.json(sukien);
-  }catch(error){
-    res.status(500).message({message: error.message});
+const getAllLienKetController = async (req, res) => {
+  try {
+    let lienket = await getAllLienKet();
+    sendSuccess(res, 'LienKet fetched successfully', lienket);
+  } catch (error) {
+    sendError(res, error.message);
   }
-}
+};
 
-const createLienKetController = async(req,res) => {
-  try{
-    let image = req.file ? req.file.filename : null;
-
+const createLienKetController = async (req, res) => {
+  try {
     if (!req.file) {
-      return res.status(400).json({ success: false, message: "Missing file: image is required" });
+      return sendError(res, 'Missing file: image is required', 400);
     }
-
+    const image = req.file.filename;
     const { sponsor, link, categoryId } = req.body;
     if (!sponsor || !link) {
-      return res.status(400).json({ success: false, message: "Missing required fields: sponsor and/or link" });
+      return sendError(res, 'Missing required fields: sponsor and/or link', 400);
     }
-
-    const [sukien] = await connection.execute(
+    const [result] = await connection.execute(
       "INSERT INTO lienket (image, sponsor, link, category_id) VALUES (?, ?, ?, ?)",
-      [image, sponsor, link , categoryId]
+      [image, sponsor, link, categoryId]
     );
-    res.json({ success: true, message: 'Insert thành công' });
-  }catch(error){
-    res.status(500).json({message: error.message})
+    sendSuccess(res, 'Insert thành công', { insertId: result.insertId });
+  } catch (error) {
+    sendError(res, error.message);
   }
-}
+};
 
-const getLienKetByIdController = async(req,res) => {
-  try{
+const getLienKetByIdController = async (req, res) => {
+  try {
     let id = req.params.id;
-    let sukien = await getLienKetById(id);
-    res.json(sukien);
-  }catch(error){
-    res.status(500).message({message: error.message});
+    let lienket = await getLienKetById(id);
+    sendSuccess(res, 'LienKet fetched successfully', lienket);
+  } catch (error) {
+    sendError(res, error.message);
   }
-}
+};
 
-
-const updateLienKetController = async(req,res) =>{
-  try{
+const updateLienKetController = async (req, res) => {
+  try {
     let id = req.params.id;
     let image = req.file ? req.file.filename : null;
-    let {sponsor,link} = req.body;
+    let { sponsor, link } = req.body;
     sponsor = sponsor !== undefined ? sponsor : null;
     link = link !== undefined ? link : null;
-
-    let sukien = await updateLienKet(id,image,sponsor,link);
-    res.json({success: true, message: "Cap nhat thanh cong"});
-  }catch(error){
-    res.status(500).json({message: error.message});
+    const result = await updateLienKet(id, image, sponsor, link);
+    sendSuccess(res, 'Cập nhật thành công', { affectedRows: result.affectedRows });
+  } catch (error) {
+    sendError(res, error.message);
   }
-}
+};
 
-
-const deleteLienKetController = async(req,res)=> {
-  try{
+const deleteLienKetController = async (req, res) => {
+  try {
     let id = req.params.id;
-    let sukien = await deleteLienKet(id);
-    res.json({message: "Xoa thanh cong"});
-  }catch(error){
-    res.status(500).message({message: error.message})
+    const result = await deleteLienKet(id);
+    sendSuccess(res, 'Xóa thành công', { affectedRows: result.affectedRows });
+  } catch (error) {
+    sendError(res, error.message);
   }
-}
+};
 
-const getAllLienKetByCategoryId = async(req,res) => {
+const getAllLienKetByCategoryId = async (req, res) => {
   const categoryId = req.params.categoryId;
-  try{
-    let sukien = await connection.execute("SELECT * FROM lienket WHERE category_id = ?", [categoryId]);
-    res.json(sukien[0]);
-  }catch(error){
-    res.status(500).message({message: error.message})
+  try {
+    const [rows] = await connection.execute("SELECT * FROM lienket WHERE category_id = ?", [categoryId]);
+    sendSuccess(res, 'LienKet fetched successfully', rows);
+  } catch (error) {
+    sendError(res, error.message);
   }
-}
+};
 
-
-
-module.exports={getAllLienKetController,createLienKetController,getLienKetByIdController,updateLienKetController,deleteLienKetController,upload, getAllLienKetByCategoryId}
+module.exports = {
+  getAllLienKetController,
+  createLienKetController,
+  getLienKetByIdController,
+  updateLienKetController,
+  deleteLienKetController,
+  upload,
+  getAllLienKetByCategoryId
+};

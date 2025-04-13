@@ -1,7 +1,8 @@
 const connection = require('../../config/database');
 const { getAllGiangDay, getGiangDayById, updateGiangDay, deleteGiangDay } = require('../../service/MT/CRUDgiangday');
-
 const multer = require('multer');
+const { sendSuccess, sendError } = require('../../utils/response');
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'src/public/assets'); // đảm bảo folder này tồn tại
@@ -10,67 +11,75 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + file.originalname);
   }
 });
-
 const upload = multer({ storage: storage });
 
 const getAllGiangDayController = async (req, res) => {
   try {
     const giangday = await getAllGiangDay();
-    res.json(giangday);
+    sendSuccess(res, 'GiangDay fetched successfully', giangday);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    sendError(res, error.message);
   }
-}
+};
 
 const createGiangDayController = async (req, res) => {
-  const update = new Date();
+  const updateTime = new Date();
   const { title } = req.body;
   if (!req.file) {
-    return res.status(400).json({ success: false, message: "No file uploaded" });
+    return sendError(res, "No file uploaded", 400);
   }
-
-  const image = req.file ? req.file.filename : null;
+  const image = req.file.filename;
   try {
-    const result = await connection.execute('INSERT INTO giangday (updated_at, image,title) VALUES (?, ?,?)', [update, image, title]);
-    res.json({ success: true, message: 'Insert thành công' });
+    const result = await connection.execute(
+      'INSERT INTO giangday (updated_at, image, title) VALUES (?, ?, ?)',
+      [updateTime, image, title]
+    );
+    sendSuccess(res, 'Insert thành công', { insertId: result.insertId }, 201);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    sendError(res, error.message);
   }
-}
+};
 
 const getGiangDayByIdController = async (req, res) => {
   const id = req.params.id;
   try {
     const giangday = await getGiangDayById(id);
-    res.json(giangday);
+    sendSuccess(res, 'GiangDay fetched successfully', giangday);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    sendError(res, error.message);
   }
-}
+};
 
 const upadateGiangDayController = async (req, res) => {
   const id = req.params.id;
-  const title  = req.body;
-  if (title === undefined) {
-    return res.status(400).json({ success: false, message: "Missing field: title"});
+  const { title } = req.body;
+  if (!title) {
+    return sendError(res, "Missing field: title", 400);
   }
   const image = req.file ? req.file.filename : null;
   try {
     const result = await updateGiangDay(id, image, title);
-    res.json({ success: true, message: 'Update thành công' });
+    sendSuccess(res, 'Update thành công', { affectedRows: result.affectedRows });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    sendError(res, error.message);
   }
-}
+};
 
 const deleteGiangDayController = async (req, res) => {
   const id = req.params.id;
   try {
     const result = await deleteGiangDay(id);
-    res.json({ success: true, message: 'Delete thành công' });
+    sendSuccess(res, 'Delete thành công', { affectedRows: result.affectedRows });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    sendError(res, error.message);
   }
-}
+};
 
-module.exports = { getAllGiangDayController, createGiangDayController, getGiangDayByIdController, upadateGiangDayController, deleteGiangDayController, upload };
+module.exports = { 
+  getAllGiangDayController, 
+  createGiangDayController, 
+  getGiangDayByIdController, 
+  upadateGiangDayController, 
+  deleteGiangDayController, 
+  upload 
+};
