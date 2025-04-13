@@ -14,7 +14,7 @@ const NewsItem = ({ item, isFirst }) => {
                     <strong>{item.title}</strong> ({item.date}) {isFirst && <span className="new-badge">mới</span>}
                 </h2>
                 <p className="news-description">
-                    {item.content.length > 100 ? item.content.slice(0, 100) + "..." : item.content}
+                    {/* {item.content.length > 100 ? item.content.slice(0, 100) + "..." : item.content} */}
                     <a href={`/news/${item.id}`} className="read-more"> Chi tiết &raquo;</a>
                 </p>
             </div>

@@ -25,7 +25,6 @@ const ContentPage = () => {
         fetchNewsData();
     }, []);
 
-    if (news.length === 0) return <p style={{margin:"10px"}}>Đang tải tin tức...</p>;
 
     return (
         <>
@@ -34,11 +33,13 @@ const ContentPage = () => {
                     <img src="../../src/assets/news.png" alt="news-icon" className="news-icon" />
                     <span className="news-title read-more">Tin Tức STU</span>
                 </div>
+                { news.length === 0 ?  <p style={{margin:"10px"}}>Đang tải tin tức...</p> : 
                 <div className="news-list">
                     {news.slice(0, 5).map((item, index) => (
                         <NewsItem key={item.id} item={item} isFirst={index === 0} />
                     ))}
                 </div>
+                }
                 <div className="see-all-container">
                          <SeeAllButton onClick={() => window.location.href = "/news"} />
                 </div>

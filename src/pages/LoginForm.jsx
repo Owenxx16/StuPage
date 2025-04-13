@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './LoginForm.css';
 import axios from 'axios';
-import { Navigate, Route, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -10,25 +11,27 @@ const LoginForm = () => {
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
-      console.log(">>> check email pass",{email,password});
     e.preventDefault();
     try {
       const res = await axios.post('https://stupage.onrender.com/user/login', {
         email,
         password,
       });
+
       if (res.data.status === 200) {
         const { token, refreshToken } = res.data.data;
-        localStorage.setItem('token', token);
-        localStorage.setItem('refreshToken', refreshToken);
+
+        Cookies.set('token', token, { expires: 1 }); // expires: 1 ngày
+        Cookies.set('refreshToken', refreshToken, { expires: 7 }); // expires: 7 ngày
+
         setMessage('Đăng nhập thành công!');
-        // redirect hoặc cập nhật context
         navigate('/adminpage');
       } else {
         setMessage('Sai thông tin đăng nhập!');
       }
     } catch (err) {
-      setMessage('Lỗi đăng nhập!',err.value);
+      setMessage('Lỗi đăng nhập!');
+      console.error(err);
     }
   };
 

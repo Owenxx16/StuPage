@@ -1,0 +1,35 @@
+.news-form-container {
+    padding: 1rem;
+    max-width: 768px;
+    margin: 0 auto;
+  }
+  
+  .news-form-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .news-form-input {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .news-form-button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .news-form-button:hover {
+    background-color: #1d4ed8;
+  }
+  

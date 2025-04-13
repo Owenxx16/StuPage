@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../../axiosInstance";
+import Cookies from "js-cookie";
 import "./UserManagement.css";
 
 const UserManagement = () => {
@@ -15,7 +16,7 @@ const UserManagement = () => {
   }, []);
 
   const getAuthHeaders = () => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token"); 
     return {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -25,9 +26,9 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("https://stupage.onrender.com/user/getall", getAuthHeaders());
+      const res = await axios.get("https://stupage.onrender.com/user", getAuthHeaders());
       const user = res.data.data;
-      setUsers(Array.isArray(user) ? user : []);
+      setUsers(user ? [user] : []);
     } catch (err) {
       console.error("Lỗi khi lấy danh sách người dùng:", err);
       setUsers([]);
@@ -47,6 +48,7 @@ const UserManagement = () => {
     e.preventDefault();
     try {
       if (editingId) {
+        console.log(">>>check ")
         await axios.put("https://stupage.onrender.com/user/updateUser", formData, getAuthHeaders());
       } else {
         await axios.post("https://stupage.onrender.com/user/register", formData);

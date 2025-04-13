@@ -38,6 +38,8 @@ import AdminPage from "./pages/admin/AdminPage";
 import PrivateRoute from "./pages/admin/PrivateRoute";
 import UserManagement from "./pages/admin/UserManagement";
 import CategoryManagement from "./pages/admin/CategoryManagement";
+import NewsManagement from "./pages/admin/NewsManagement";
+import NewsContentManagement from "./pages/admin/NewsContentManagement";
 // ... các import khác
 
 function App() {
@@ -55,8 +57,8 @@ function App() {
       >
         <Route path="users" element={<UserManagement />} />
         <Route path="categories" element={<CategoryManagement />} />
-        {/* <Route path="news" element={<NewsManagement />} />
-        <Route path="news-content" element={<NewsContentManagement />} /> */}
+        <Route path="news" element={<NewsManagement />} />
+        <Route path="news-content" element={<NewsContentManagement />} />
     </Route>
 
         {/* Các trang còn lại đều có Header/Footer */}

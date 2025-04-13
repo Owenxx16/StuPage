@@ -21,7 +21,7 @@ const Header2 = () => {
                     <FontAwesomeIcon icon={faMagnifyingGlass} className="icon_search" />
                 </div>
                 <div className="stuCode_container">
-                    <span>Mã Trường</span>
+                    <span style={{paddingRight:"10px", width:"min-content"}}>Mã Trường</span>
                     <img src={stuCode} alt="" />
                 </div>
             </div>
