@@ -1,7 +1,7 @@
 const connection = require('../../config/database');
-const {getAllCamNang, getCamNangById, updateCamNang, deleteCamNang} = require('../../service/MT/CRUDcamnang');
+const { getAllCamNang, getCamNangById, updateCamNang, deleteCamNang } = require('../../service/MT/CRUDcamnang');
 const multer = require('multer');
-
+const { sendSuccess, sendError } = require('../../utils/response');
 
 // Set up multer for file upload
 const storage = multer.diskStorage({
@@ -11,66 +11,70 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
   }
-})
-
-// Set up multer for file upload
-// const upload = multer({ dest: './public/assets' });
+});
 const upload = multer({ storage: storage });
 
-
-// Set up the route for file upload
-// router.post('/upload', upload.single('image'), (req, res) => {
 const getAllCamNangController = async (req, res) => {
   try {
     const camnang = await getAllCamNang();
-    res.json(camnang);
+    sendSuccess(res, 'CamNang fetched successfully', camnang);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    sendError(res, error.message);
   }
-}
+};
 
 const createCamNangController = async (req, res) => {
   const update = new Date();
   const { head, body, footer, altimg, link, category_id } = req.body;
   const image = req.file ? req.file.filename : null;
   try {
-    const result = await connection.execute('INSERT INTO camnang (updated_at, head, body, footer, altimg, image, link, category_id ) VALUES (?, ?, ?, ?, ?, ?, ?,?)', [update, head, body, footer, altimg, image, link,category_id ]);
-    res.json({ success: true, message: 'Insert thành công' });
+    const result = await connection.execute(
+      'INSERT INTO camnang (updated_at, head, body, footer, altimg, image, link, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      [update, head, body, footer, altimg, image, link, category_id]
+    );
+    sendSuccess(res, 'Insert thành công', { insertId: result.insertId });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    sendError(res, error.message);
   }
-}
+};
 
 const getCamNangByIdController = async (req, res) => {
   const id = req.params.id;
   try {
     const camnang = await getCamNangById(id);
-    res.json(camnang);
+    sendSuccess(res, 'CamNang fetched successfully', camnang);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    sendError(res, error.message);
   }
-}
+};
 
 const updateCamNangController = async (req, res) => {
   const id = req.params.id;
-  const { head, body, footer, altimg, link,category_id  } = req.body;
+  const { head, body, footer, altimg, link, category_id } = req.body;
   const image = req.file ? req.file.filename : null;
   try {
-    const result = await updateCamNang(id, head, body, footer, altimg, image, link,category_id );
-    res.json({ success: true, message: 'Update thành công' });
+    const result = await updateCamNang(id, head, body, footer, altimg, image, link, category_id);
+    sendSuccess(res, 'Update thành công', { affectedRows: result.affectedRows });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    sendError(res, error.message);
   }
-}
+};
 
 const deleteCamNangController = async (req, res) => {
   const id = req.params.id;
   try {
     const result = await deleteCamNang(id);
-    res.json({ success: true, message: 'Delete thành công' });
+    sendSuccess(res, 'Delete thành công', { affectedRows: result.affectedRows });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    sendError(res, error.message);
   }
-}
+};
 
-module.exports = { getAllCamNangController, createCamNangController, getCamNangByIdController, updateCamNangController, deleteCamNangController,upload };
+module.exports = { 
+  getAllCamNangController, 
+  createCamNangController, 
+  getCamNangByIdController, 
+  updateCamNangController, 
+  deleteCamNangController, 
+  upload 
+};
