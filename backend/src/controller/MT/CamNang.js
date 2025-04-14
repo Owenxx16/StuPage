@@ -1,18 +1,13 @@
 const connection = require('../../config/database');
 const { getAllCamNang, getCamNangById, updateCamNang, deleteCamNang } = require('../../service/MT/CRUDcamnang');
 const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 const { sendSuccess, sendError } = require('../../utils/response');
+const cloudinary = require('../../config/cloudinary');
+const streamifier = require('streamifier');
 
 // Set up multer for file upload
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'src/public/assets');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  }
-});
-const upload = multer({ storage: storage });
 
 const getAllCamNangController = async (req, res) => {
   try {
@@ -26,11 +21,28 @@ const getAllCamNangController = async (req, res) => {
 const createCamNangController = async (req, res) => {
   const update = new Date();
   const { head, body, footer, altimg, link, category_id } = req.body;
-  const image = req.file ? req.file.filename : null;
   try {
+    if (!req.file) {
+      return sendError(res, "No file uploaded", 400);
+    }
+    // Upload file từ buffer của multer lên Cloudinary
+    const uploadStream = () => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'camnang' }, // folder trên Cloudinary
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+    };
+    const resultUpload = await uploadStream();
+    const imageUrl = resultUpload.secure_url;
     const result = await connection.execute(
       'INSERT INTO camnang (updated_at, head, body, footer, altimg, image, link, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [update, head, body, footer, altimg, image, link, category_id]
+      [update, head, body, footer, altimg, imageUrl, link, category_id]
     );
     sendSuccess(res, 'Insert thành công', { insertId: result.insertId });
   } catch (error) {
@@ -51,9 +63,25 @@ const getCamNangByIdController = async (req, res) => {
 const updateCamNangController = async (req, res) => {
   const id = req.params.id;
   const { head, body, footer, altimg, link, category_id } = req.body;
-  const image = req.file ? req.file.filename : null;
   try {
-    const result = await updateCamNang(id, head, body, footer, altimg, image, link, category_id);
+    let imageUrl = null;
+    if (req.file) {  
+      const uploadStream = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: 'camnang' },
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result);
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      };
+      const resultUpload = await uploadStream();
+      imageUrl = resultUpload.secure_url;
+    }
+    const result = await updateCamNang(id, head, body, footer, altimg, imageUrl, link, category_id);
     sendSuccess(res, 'Update thành công', { affectedRows: result.affectedRows });
   } catch (error) {
     sendError(res, error.message);

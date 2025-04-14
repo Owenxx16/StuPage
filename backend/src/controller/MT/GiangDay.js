@@ -2,16 +2,10 @@ const connection = require('../../config/database');
 const { getAllGiangDay, getGiangDayById, updateGiangDay, deleteGiangDay } = require('../../service/MT/CRUDgiangday');
 const multer = require('multer');
 const { sendSuccess, sendError } = require('../../utils/response');
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'src/public/assets'); // đảm bảo folder này tồn tại
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  }
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+const cloudinary = require('../../config/cloudinary');
+const streamifier = require('streamifier');
 
 const getAllGiangDayController = async (req, res) => {
   try {
@@ -25,14 +19,28 @@ const getAllGiangDayController = async (req, res) => {
 const createGiangDayController = async (req, res) => {
   const updateTime = new Date();
   const { title } = req.body;
-  if (!req.file) {
-    return sendError(res, "No file uploaded", 400);
-  }
-  const image = req.file.filename;
   try {
+    if (!req.file) {
+      return sendError(res, "No file uploaded", 400);
+    }
+    // Upload file từ buffer của multer lên Cloudinary
+    const uploadStream = () => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'giangday' },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+    };
+    const resultUpload = await uploadStream();
+    const imageUrl = resultUpload.secure_url;
     const result = await connection.execute(
       'INSERT INTO giangday (updated_at, image, title) VALUES (?, ?, ?)',
-      [updateTime, image, title]
+      [updateTime, imageUrl, title]
     );
     sendSuccess(res, 'Insert thành công', { insertId: result.insertId }, 201);
   } catch (error) {
@@ -56,9 +64,25 @@ const upadateGiangDayController = async (req, res) => {
   if (!title) {
     return sendError(res, "Missing field: title", 400);
   }
-  const image = req.file ? req.file.filename : null;
+  let imageUrl = null;
+  if (req.file) {
+    const uploadStream = () => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'giangday' },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+    };
+    const resultUpload = await uploadStream();
+    imageUrl = resultUpload.secure_url;
+  }
   try {
-    const result = await updateGiangDay(id, image, title);
+    const result = await updateGiangDay(id, imageUrl, title);
     sendSuccess(res, 'Update thành công', { affectedRows: result.affectedRows });
   } catch (error) {
     sendError(res, error.message);
