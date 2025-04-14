@@ -60,9 +60,10 @@ const getGiangDayByIdController = async (req, res) => {
 
 const upadateGiangDayController = async (req, res) => {
   const id = req.params.id;
-  const { title } = req.body;
-  if (!title) {
-    return sendError(res, "Missing field: title", 400);
+  const title = req.body.title || "";
+  
+  if (!title.trim()) {
+    return sendError(res, "Missing or empty field: title", 400);
   }
   let imageUrl = null;
   if (req.file) {
