@@ -6,6 +6,7 @@ const { uploadNewsContent } = require('../config/upload');
 
 const {
     getNewsContent,
+    getnewcontentbyid,
     createNewsContent,
     updateNewsContent,
     deleteNewsContent,
@@ -16,6 +17,7 @@ const {
 
 //router.post("/", uploadNewsContent, multerErrorHandler, createNewsContent);
 router.get("/", getNewsContent);
+router.get("/:id", getnewcontentbyid);
 router.post("/", createNewsContent);
 router.put('/:id', updateNewsContent);
 router.delete('/:id', deleteNewsContent);
