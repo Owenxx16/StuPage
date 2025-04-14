@@ -6,7 +6,7 @@ const {getAllGiangDayController, createGiangDayController, getGiangDayByIdContro
 router.get('/', getAllGiangDayController);
 router.post('/', upload.single('image') ,createGiangDayController);
 router.get('/:id', getGiangDayByIdController);
-router.put('/:id', upadateGiangDayController);
+router.put('/:id', upload.single('image'), upadateGiangDayController);
 router.delete('/:id', deleteGiangDayController);
 
 module.exports = router;
