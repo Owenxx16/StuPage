@@ -10,7 +10,7 @@ The web project is carried out by group members with the purpose of writing toge
 
 # PLAN
 
-The project is divided into 2 members handling the back-end and 2 members handling the front-end.
+The project is divided into 2 members handling the back-end and 2 members handling the front-end. And the last member has a mission to build a Power Point, write docs and tester
 
 ---
 
