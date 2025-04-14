@@ -1,5 +1,5 @@
 const db = require('../config/database');
-const { uploadTinyImage } = require('../config/upload');
+const { uploadTinyImage } = require('../config/uploadCloudinary');
 
 
 const getnewcontentbyid = async (req, res) => {

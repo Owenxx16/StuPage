@@ -9,7 +9,7 @@ const createNews = async (req, res) => {
 
     try {
         const mainImageFile = req.file;
-        const image_title = mainImageFile ? `assets/${mainImageFile.filename}` : (req.body.image_title || '');
+        const image_title = mainImageFile ? mainImageFile.path : null;
 
         const [newsResult] = await db.execute(
             `INSERT INTO news 
@@ -300,7 +300,7 @@ const updateNews = async (req, res) => {
         }
 
         const mainImageFile = req.file;
-        const image_title = mainImageFile ? `assets/${mainImageFile.filename}` : null;
+        const image_title = mainImageFile ? mainImageFile.path : null;
 
         await db.execute(
             `UPDATE news 

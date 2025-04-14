@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { uploadNewsContent } = require('../config/upload');
 //const { createNewsContent, deleteNewsContent, updateNewsContent } = require('../controller/News_content');
 
 const {
