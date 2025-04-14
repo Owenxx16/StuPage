@@ -1,17 +1,12 @@
 const connection = require('../../config/database');
 const { getAllSuKien, getSuKienById, updateSuKien, deleteSuKien } = require('../../service/MT/CRUDsukien.js');
 const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 const { sendSuccess, sendError } = require('../../utils/response');
+const cloudinary = require('../../config/cloudinary');
+const streamifier = require('streamifier');
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'src/public/assets'); // đảm bảo folder này tồn tại
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  }
-});
-const upload = multer({ storage: storage });
 
 const getAllSuKienController = async (req, res) => {
   try {
@@ -24,7 +19,26 @@ const getAllSuKienController = async (req, res) => {
 
 const createSuKienController = async (req, res) => {
   try {
-    const hinh = req.file ? req.file.filename : null;
+    if (!req.file) {
+      return sendError(res, "No file uploaded", 400);
+    }
+    
+    // Upload file từ buffer của multer lên Cloudinary
+    const uploadStream = () => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'sukien' }, // thay folder nếu cần
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+    };
+
+    const resultUpload = await uploadStream();
+    const hinh = resultUpload.secure_url; // URL của ảnh sau khi upload lên Cloudinary
     let ngay = new Date().getDate();
     let { diachi, noidung, categoryId } = req.body;
     const [rows, fields] = await connection.execute(
@@ -50,7 +64,24 @@ const getSuKienByIdController = async (req, res) => {
 const updateSuKienByController = async (req, res) => {
   try {
     let id = req.params.id;
-    const image = req.file ? req.file.filename : null;
+    let image = null;
+    if (req.file) {
+      // Upload file từ buffer của multer lên Cloudinary
+      const uploadStream = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: 'sukien' },
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result);
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      };
+      const resultUpload = await uploadStream();
+      image = resultUpload.secure_url;
+    }
     let ngay = new Date().getDate();
     let { diachi, noidung } = req.body;
     const result = await updateSuKien(id, image, ngay, diachi, noidung);

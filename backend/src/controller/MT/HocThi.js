@@ -1,15 +1,10 @@
 const connection = require('../../config/database');
 const multer = require('multer');
 const { sendSuccess, sendError } = require('../../utils/response');
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'src/public/assets'); // đảm bảo folder này tồn tại
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  }
-});
-const upload = multer({ storage: storage });
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+const cloudinary = require('../../config/cloudinary');
+const streamifier = require('streamifier');
 
 const getAllHocthiController = async (req, res) => {
   try {
@@ -35,15 +30,31 @@ const getHocthiByIdController = async (req, res) => {
 
 const createHocthiController = async (req, res) => {
   const { content, description, link, categoryId } = req.body;
-  const image = req.file ? req.file.filename : null;
   const updated_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
   if (!content || !description) {
     return sendError(res, 'Thiếu các trường bắt buộc: content, description', 400);
   }
   try {
+    let imageUrl = null;
+    if (req.file) {
+      const uploadStream = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: 'hocthi' },
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result);
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      };
+      const resultUpload = await uploadStream();
+      imageUrl = resultUpload.secure_url;
+    }
     const [result] = await connection.execute(
       'INSERT INTO hocthi (updated_at, content, image, description, link, category_id) VALUES (?, ?, ?, ?, ?, ?)',
-      [updated_at, content, image, description, link, categoryId]
+      [updated_at, content, imageUrl, description, link, categoryId]
     );
     sendSuccess(res, 'Insert thành công', { insertId: result.insertId });
   } catch (error) {
@@ -54,12 +65,28 @@ const createHocthiController = async (req, res) => {
 const updateHocthiController = async (req, res) => {
   const id = req.params.id;
   const { content, description, link } = req.body;
-  const image = req.file ? req.file.filename : null;
   const updated_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
   try {
+    let imageUrl = null;
+    if (req.file) {
+      const uploadStream = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: 'hocthi' },
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result);
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      };
+      const resultUpload = await uploadStream();
+      imageUrl = resultUpload.secure_url;
+    }
     const [result] = await connection.execute(
       'UPDATE hocthi SET updated_at = ?, content = ?, image = ?, description = ?, link = ? WHERE id = ?',
-      [updated_at, content, image, description, link, id]
+      [updated_at, content, imageUrl, description, link, id]
     );
     if (result.affectedRows === 0) {
       return sendError(res, 'Không tìm thấy bản ghi để cập nhật', 404);
