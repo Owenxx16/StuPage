@@ -2,6 +2,34 @@ const db = require('../config/database');
 const { uploadTinyImage } = require('../config/upload');
 
 
+const getNewsContent = async (req, res) => {
+
+
+    try {
+        const [rows] = await db.execute('SELECT * FROM news_content ');
+        if (rows.length === 0) {
+            return res.status(404).json({
+                status: 404,
+                message: 'News content not found',
+                data: null
+            });
+        }
+
+        res.status(200).json({
+            status: 200,
+            message: 'News content retrieved successfully',
+            data: rows
+        });
+    } catch (error) {
+        console.error('Error retrieving news content:', error);
+        res.status(500).json({
+            status: 500,
+            message: 'Internal server error',
+            data: null
+        });
+    }
+};
+
 const createNewsContent = async (req, res) => {
     const { news_id, content } = req.body;
 
@@ -127,6 +155,7 @@ const uploadTinyImageHandler = async (req, res) => {
 };
 
 module.exports = {
+    getNewsContent,
     createNewsContent,
     updateNewsContent,
     deleteNewsContent,
