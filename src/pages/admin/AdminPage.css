@@ -1,4 +1,6 @@
-
+  .admin-header{
+    height: 100%;
+  }
   
   .sidebar {
     width: 100%;
@@ -11,9 +13,8 @@
   
   .sidebar a {
     color: white;
-    margin: 5px 0;
     text-decoration: none;
-    padding: 10px;
+    padding: 20px;
   }
 
   .sidebar a:hover{

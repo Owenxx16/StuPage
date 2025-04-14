@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../axiosInstance";
 import Cookies from "js-cookie";
-import NewsContentForm from "./NewsContentManagement"; // 👈 import component form nội dung
+import NewsContentForm from "./NewsContentForm"; // 👈 import component form nội dung
 import "./UserManagement.css";
 
 const NewsManagement = () => {
@@ -9,7 +9,7 @@ const NewsManagement = () => {
   const [categories, setCategories] = useState([]);
   const [users, setUsers] = useState([]);
   const [image, setImage] = useState(null);
-  const [selectedNewsIdForContent, setSelectedNewsIdForContent] = useState(null); // 👈 để truyền ID
+  const [selectedNewsIdForContent, setSelectedNewsIdForContent] = useState(null);
 
   const handleAddContent = (newsId) => {
     setSelectedNewsIdForContent(newsId);

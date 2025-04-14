@@ -1,112 +1,136 @@
-import React, { useState, useEffect } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
-import axios from "../../axiosInstance";
-import './NewsContentForm.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import EditNewsContentForm from "./EditNewsContentForm"; // Đổi từ NewsContentForm
+import "./UserManagement.css";
 
-const NewsContentForm = ({ newsId, onDone }) => {
-  const [content, setContent] = useState('');
+const NewsContentManagement = () => {
+  const [newsContent, setNewsContent] = useState([]);
+  const [newsList, setNewsList] = useState([]);
+  const [selectedContentId, setSelectedContentId] = useState(null); // Dùng content ID
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
-    setContent('');
-  }, [newsId]); // Reset content mỗi khi newsId thay đổi
+    fetchNewsContent();
+    fetchNews();
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!newsId || !content) {
-      alert('Vui lòng nhập đầy đủ nội dung');
-      return;
-    }
-
-    let tempContent = content;
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(content, 'text/html');
-    const images = doc.querySelectorAll('img');
-
-    // Upload từng ảnh nếu là base64
-    for (let img of images) {
-      const src = img.getAttribute('src');
-      if (src.startsWith('data:image/')) {
-        const blob = await (await fetch(src)).blob();
-        const formData = new FormData();
-        formData.append('file', blob, 'image.png');
-
-        try {
-          const res = await axios.post('https://stupage.onrender.com/news_content/upload', formData);
-          const realUrl = res.data.location;
-          tempContent = tempContent.replace(src, realUrl); // Thay thế base64 bằng link thật
-        } catch (error) {
-          console.error('Lỗi upload ảnh:', error);
-          alert('Không thể upload ảnh!');
-          return;
-        }
-      }
-    }
-
-    // Gửi nội dung sau khi đã thay link ảnh
+  const fetchNewsContent = async () => {
     try {
-      const res = await axios.post('https://stupage.onrender.com/news_content', {
-        news_id: newsId,
-        content: tempContent,
-      });
+      const res = await axios.get("https://stupage.onrender.com/news_content");
+      setNewsContent(Array.isArray(res.data.data) ? res.data.data : []);
+    } catch (err) {
+      console.error("Lỗi khi lấy nội dung bài viết:", err);
+      setNewsContent([]);
+    }
+  };
 
-      alert('Tạo nội dung thành công!');
-      console.log(res.data);
-      setContent(''); // Reset sau khi gửi thành công
-      if (onDone) onDone(); // Gọi callback nếu có
-    } catch (error) {
-      console.error('Error submitting:', error);
-      alert('Lỗi khi gửi nội dung');
+  const fetchNews = async () => {
+    try {
+      const res = await axios.get("https://stupage.onrender.com/news");
+      setNewsList(Array.isArray(res.data.data) ? res.data.data : []);
+    } catch (err) {
+      console.error("Lỗi khi lấy danh sách bài viết:", err);
+      setNewsList([]);
+    }
+  };
+
+  const getNewsTitleById = (id) => {
+    const news = newsList.find((n) => n.id === id);
+    return news ? news.title : "Không tìm thấy";
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`https://stupage.onrender.com/news_content/${id}`);
+      fetchNewsContent();
+    } catch (err) {
+      console.error("Lỗi khi xoá nội dung bài viết:", err);
+    }
+  };
+
+  const handleEdit = (item) => {
+    setSelectedContentId(item.id); // Gán ID của content để sửa
+  };
+
+  // Pagination
+  const totalPages = Math.ceil(newsContent.length / itemsPerPage);
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+  const currentItems = newsContent.slice(indexOfFirst, indexOfLast);
+
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
     }
   };
 
   return (
-    <div className="news-form-container">
-      <h2 className="news-form-title">Tạo nội dung cho bài viết ID: {newsId}</h2>
-      <form onSubmit={handleSubmit}>
-        <Editor
-          apiKey="bv0d3h5gn8pt9jt11pgs0hacta2fcwxmdj96p6p97s4xtpbc"
-          value={content}
-          onEditorChange={(newValue) => setContent(newValue)}
-          init={{
-            height: 400,
-            menubar: true,
-            plugins: ['image', 'link', 'code', 'preview'],
-            toolbar:
-              'undo redo | bold italic underline | alignleft aligncenter alignright | image | code preview',
-            automatic_uploads: false,
-            file_picker_types: 'image',
-            file_picker_callback: function (cb, value, meta) {
-              if (meta.filetype === 'image') {
-                const input = document.createElement('input');
-                input.setAttribute('type', 'file');
-                input.setAttribute('accept', 'image/*');
+    <div className="admin-container">
+      <h2 style={{ textAlign: "center", padding: "10px 10px 30px 10px" }}>
+        Quản lý Nội dung Bài viết
+      </h2>
 
-                input.onchange = function () {
-                  const file = input.files[0];
-                  const reader = new FileReader();
-                  reader.onload = function () {
-                    const base64 = reader.result;
-                    cb(base64, { title: file.name });
-                  };
-                  reader.readAsDataURL(file);
-                };
+      {selectedContentId && (
+        <div style={{ marginBottom: "30px" }}>
+          <EditNewsContentForm
+            contentId={selectedContentId}
+            onDone={() => {
+              setSelectedContentId(null);
+              fetchNewsContent(); // Tải lại khi sửa xong
+            }}
+          />
+        </div>
+      )}
 
-                input.click();
-              }
-            }
-          }}
-        />
+      <table className="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tên Bài Viết</th>
+            <th>Nội dung</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentItems.map((item) => (
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              <td>{getNewsTitleById(item.news_id)}</td>
+              <td>
+                <div
+                  style={{ maxHeight: "150px", overflowY: "auto" }}
+                  dangerouslySetInnerHTML={{ __html: item.content }}
+                />
+              </td>
+              <td>
+                <button onClick={() => handleEdit(item)}>Sửa</button>
+                <button onClick={() => handleDelete(item.id)}>Xoá</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-        <button
-          type="submit"
-          className="news-form-button"
-        >
-          Gửi bài viết
+      <div className="pagination">
+        <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+          &lt;
         </button>
-      </form>
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            onClick={() => goToPage(page)}
+            className={currentPage === page ? "active" : ""}
+          >
+            {page}
+          </button>
+        ))}
+        <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
+          &gt;
+        </button>
+      </div>
     </div>
   );
 };
 
-export default NewsContentForm;
+export default NewsContentManagement;

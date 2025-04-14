@@ -5,17 +5,19 @@ import '../admin/AdminPage.css';
 const AdminPage = () =>{
    return(
     <>
-         <div className="admin-container">
-        <nav className="sidebar">
-        <Link to="/adminpage/users">User</Link>
-        <Link to="/adminpage/categories">Category</Link>
-        <Link to="/adminpage/news">News</Link>
-        <Link to="/adminpage/news-content">News Content</Link>
-        </nav>
+      <div className="admin-container">
+         <div className="admin-header">
+            <nav className="sidebar">
+               <Link to="/adminpage/users">Người dùng</Link>
+               <Link to="/adminpage/categories">Danh mục tin tức</Link>
+               <Link to="/adminpage/news">Tin tức</Link>
+               <Link to="/adminpage/news-content">Nội dung tin tức</Link>
+         </nav>
+         </div>
         <main className="admin-main">
         <Outlet />
         </main>
-    </div>
+      </div>
     </>
    
    );

@@ -40,6 +40,8 @@ import UserManagement from "./pages/admin/UserManagement";
 import CategoryManagement from "./pages/admin/CategoryManagement";
 import NewsManagement from "./pages/admin/NewsManagement";
 import NewsContentManagement from "./pages/admin/NewsContentManagement";
+import ErrorPage from "./pages/errorPage";
+import NewsPage from "./pages/Tintuc/NewsPage";
 // ... các import khác
 
 function App() {
@@ -110,6 +112,7 @@ function App() {
                 <Route path="/tap-chi" element={<TapChi />} />
                 {/*Đăng nhập*/}
                 <Route path="/login" element={<LoginForm />} />
+                <Route path="/news" element={<NewsPage />} />
               </Routes>
               <Footer />
             </>
