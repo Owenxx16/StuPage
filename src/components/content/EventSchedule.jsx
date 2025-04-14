@@ -47,7 +47,6 @@ const EventSchedule = () => {
             events.map((item) => (
               <li key={item.id} className="event-item">
                 <div className="event-date-box">
-                  <div className="event-day">{item.category_name || "Chưa có thông tin"}</div>
                   <div className="event-date">{item.created_at || "Ngày chưa cập nhật"}</div>
                 </div>
                 <div className="event-description">{item.title || "Thông tin sự kiện chưa có"}</div>
