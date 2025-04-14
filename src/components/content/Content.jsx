@@ -79,7 +79,8 @@ const ContentPage = () => {
             </div>
             {tuyensinh.length > 0 ? (
               <>
-                <img src="../../src/assets/default.jpg" alt="Tuyển Sinh" className="main-image" />
+                <img src={tuyensinh[0].image_title}
+        alt={tuyensinh[0].title} className="main-image" />
                 <div className="main-article">
                   <a href={`/bai-viet-${tuyensinh[0].id}`}>{tuyensinh[0].title}</a>
                   <p>{new Date(tuyensinh[0].created_at).toLocaleDateString()}</p>
@@ -105,7 +106,8 @@ const ContentPage = () => {
             </div>
             {huongnghiep.length > 0 ? (
               <>
-                <img src="../../src/assets/default.jpg" alt="Hướng Nghiệp" className="main-image" />
+                <img src={huongnghiep[0].image_title}
+        alt={huongnghiep[0].title} className="main-image" />
                 <div className="main-article">
                   <a href={`/bai-viet-${huongnghiep[0].id}`}>{huongnghiep[0].title}</a>
                   <p>{new Date(huongnghiep[0].created_at).toLocaleDateString()}</p>
@@ -133,7 +135,8 @@ const ContentPage = () => {
             </div>
             {sinhvien.length > 0 ? (
               <>
-                <img src="../../src/assets/default.jpg" alt="Sinh Viên" className="main-image" />
+                <img src={sinhvien[0].image_title}
+        alt={sinhvien[0].title} className="main-image" />
                 <div className="main-article">
                   <a href={`/bai-viet-${sinhvien[0].id}`}>{sinhvien[0].title}</a>
                   <p>{new Date(sinhvien[0].created_at).toLocaleDateString()}</p>
@@ -159,7 +162,8 @@ const ContentPage = () => {
             </div>
             {hocthi.length > 0 ? (
               <>
-                <img src="../../src/assets/default.jpg" alt="Học Thi" className="main-image" />
+                <img src={hocthi[0].image_title}
+        alt={hocthi[0].title} className="main-image" />
                 <div className="main-article">
                   <a href={`/bai-viet-${hocthi[0].id}`}>{hocthi[0].title}</a>
                   <p>{new Date(hocthi[0].created_at).toLocaleDateString()}</p>
