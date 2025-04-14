@@ -1,155 +1,185 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import SeeAllButton from "../UI/SeeAllButton";
 import NewsItem from "./newsItem";
-import { Link } from "react-router-dom";
-import "./content.css";
-import SeeAllButton from  "../UI/SeeAllButton"
-import EventSchedule from "./EventSchedule";
 
 const ContentPage = () => {
-    const [news, setNews] = useState([]);
+  const [news, setNews] = useState([]);
+  const [tuyensinh, setTuyensinh] = useState([]);
+  const [huongnghiep, setHuongnghiep] = useState([]);
+  const [sinhvien, setSinhvien] = useState([]);
+  const [hocthi, setHocthi] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchNewsData = async () => {
-            try {
-                const response = await axios.get("https://stupage.onrender.com/news/");
-                if (response.data.status === 200) {
-                    const sortedNews = response.data.data.sort((a, b) => b.id - a.id); // Sắp xếp theo ID giảm dần
-                    setNews(sortedNews);
-                }
-            } catch (error) {
-                console.error("Lỗi khi lấy dữ liệu:", error);
-            }
-        };
+  useEffect(() => {
+    // Fetch dữ liệu chung
+    fetch("https://stupage.onrender.com/news")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Dữ liệu tin tức:", data);
+        if (Array.isArray(data.data)) {
+          // Lọc dữ liệu theo từng category_id
+          const filteredTuyensinh = data.data.filter(event => event.category_id === 17);
+          const filteredHuongnghiep = data.data.filter(event => event.category_id === 16);
+          const filteredSinhvien = data.data.filter(event => event.category_id === 18);
+          const filteredHocthi = data.data.filter(event => event.category_id === 7);
+          const sortedNews = data.data.sort((a, b) => b.id - a.id); // Sắp xếp tin tức chung
 
-        fetchNewsData();
-    }, []);
+          // Cập nhật trạng thái
+          setNews(sortedNews);
+          setTuyensinh(filteredTuyensinh);
+          setHuongnghiep(filteredHuongnghiep);
+          setSinhvien(filteredSinhvien);
+          setHocthi(filteredHocthi);
+        } else {
+          console.error("Dữ liệu không đúng định dạng:", data);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi gọi API tin tức:", error);
+        setLoading(false);
+      });
+  }, []);
 
+  if (loading) {
+    return <p>Đang tải...</p>;
+  }
 
-    return (
-        <>
-            <div className="news-container">
-                <div className="news-header">
-                    <img src="../../src/assets/news.png" alt="news-icon" className="news-icon" />
-                    <span className="news-title read-more">Tin Tức STU</span>
-                </div>
-                { news.length === 0 ?  <p style={{margin:"10px"}}>Đang tải tin tức...</p> : 
-                <div className="news-list">
-                    {news.slice(0, 5).map((item, index) => (
-                        <NewsItem key={item.id} item={item} isFirst={index === 0} />
-                    ))}
-                </div>
-                }
-                <div className="see-all-container">
-                         <SeeAllButton onClick={() => window.location.href = "/news"} />
-                </div>
+  return (
+    <>
+      {/* Tin tức chính */}
+      <div className="news-container">
+        <div className="news-header">
+          <img src="../../src/assets/news.png" alt="news-icon" className="news-icon" />
+          <span className="news-title read-more">Tin Tức STU</span>
+        </div>
+        {news.length === 0 ? (
+          <p style={{ margin: "10px" }}>Đang tải tin tức...</p>
+        ) : (
+          <div className="news-list">
+            {news.slice(0, 5).map((item, index) => (
+              <NewsItem key={item.id} item={item} isFirst={index === 0} />
+            ))}
+          </div>
+        )}
+        <div className="see-all-container">
+          <SeeAllButton onClick={() => window.location.href = "/news"} />
+        </div>
+      </div>
+
+      {/* Các chuyên mục */}
+      <div className="content-block">
+        <div className="content-columns">
+          {/* Tuyển Sinh */}
+          <div className="content-column">
+            <div className="content-title">
+              <img src="../../src/assets/icon-mortarboard.png" alt="icon" />
+              <span className="red">Tuyển Sinh STU</span>
             </div>
-
-
-            <div className="news-section">
-                {/* Tuyển Sinh STU */}
-                <div className="news-column">
-                    <div className="section-title">
-                        <img src="../../src/assets/icon-mortarboard.png" alt="icon"/>
-                        Tuyển Sinh STU
-                    </div>
-                    <img src="../../src/assets/tuyensinh2025.jpg" alt="tuyensinh" className="section-image" />
-                    <p><strong className="section-title-header">Tuyển sinh Đại học 2025</strong> (02/01/2025)</p>
-                    <a className="read-more-btn" href="#">Chi tiết <span style={{ color: "red" }}>►</span></a>
-                    <ul className="news-links">
-                        <li>STU tuyển sinh bổ sung 500 chỉ tiêu đại học chính quy (23/08/2024)</li>
-                        <li>Công bố điểm chuẩn trúng tuyển đợt 1 và nhập học (20/08/2024)</li>
-                    </ul>
-                    {/* Nút xem thêm */}
-                    <div className="see-all-container">
-                         <SeeAllButton onClick={() => window.location.href = "/news"} />
-                    </div>
-                </div>
-
-                {/* Hướng Nghiệp */}
-                <div className="news-column">
-                    <div className="section-title">
-                        <img src="../../src/assets/icon-career.png" alt="icon"/>
-                        Hướng Nghiệp
-                    </div>
-                    <img src="../../src/assets/huongnghiep.jpg" alt="huongnghiep" className="section-image" />
-                    <p><strong className="section-title-header">Tổng quan về ngành Công nghệ thông tin</strong> (18/03/2025) <span className="new-badge">mới</span></p>
-                    <p>Công nghệ thông tin (CNTT) là một trong những ngành học phát triển nhanh nhất trong thời đại số... <a href="#" className="read-more-btn">Chi tiết ►</a></p>
-                    <ul className="news-links">
-                        <li>Đảm bảo chất lượng và An toàn thực phẩm: ngành học đang thiếu nhân lực (31/12/2024)</li>
-                        <li>Không phải cứ học Tài chính – Ngân hàng là làm việc ở ngân hàng</li>
-                    </ul>
-                    <div className="see-all-container">
-                         <SeeAllButton onClick={() => window.location.href = "/news"} />
-                    </div>
-                </div>
-            </div>
-
-            <div className="content-block">
-            {/* Ảnh đầu tiêu đề */}
-            <Link to="/dao-tao-sau-dai-hoc">
-                <img
-                src="../../src/assets/daotaosaudaihoc.png"
-                alt="Đào tạo sau đại học"
-                className="section-header-image"
-                />
-            </Link>
-
-            {/* 2 cột nội dung bên dưới */}
-            <div className="content-columns">
-                {/* Cột 1 */}
-                <div className="content-column">
-                <div className="content-title">
-                    <img src="../../src/assets/sinhvien.png" alt="icon"/>
-                    <span className="red">Sinh Viên STU</span>
-                </div>
-
-                <img src="../../src/assets/hoithao.jpg" alt="Hội thao" className="main-image" />
+            {tuyensinh.length > 0 ? (
+              <>
+                <img src="../../src/assets/default.jpg" alt="Tuyển Sinh" className="main-image" />
                 <div className="main-article">
-                    <Link to="/bai-viet-hoi-thao">
-                    Thông báo đăng ký tham gia Hội thao Sinh viên Trường ĐH Công nghệ Sài Gòn năm học 2024 - 2025
-                    </Link>
-                    <p>(03/03/2025)</p>
-                    <Link to="/bai-viet-hoi-thao" className="detail-link">Chi tiết ►</Link>
+                  <a href={`/bai-viet-${tuyensinh[0].id}`}>{tuyensinh[0].title}</a>
+                  <p>{new Date(tuyensinh[0].created_at).toLocaleDateString()}</p>
+                  <a href={`/bai-viet-${tuyensinh[0].id}`} className="detail-link">Chi tiết ►</a>
                 </div>
                 <ul className="sub-articles">
-                    <li> STU phối hợp cùng Tuệ Group tổ chức cuộc thi thiết kế bếp...</li>
-                    <li> Hai chiến thắng liên tiếp giúp STU khẳng định vị trí...</li>
+                  {tuyensinh.slice(1, 3).map(item => (
+                    <li key={item.id}>{item.title}</li>
+                  ))}
                 </ul>
-                <div className="see-all-container">
-                         <SeeAllButton onClick={() => window.location.href = "/news"} />
-                </div>
-                </div>
+              </>
+            ) : <p>Đang tải...</p>}
+            <div className="see-all-container">
+              <SeeAllButton onClick={() => window.location.href = "/news"} />
+            </div>
+          </div>
 
-                {/* Cột 2 tương tự, ví dụ: Tuyển sinh */}
-                <div className="content-column">
-                <div className="content-title">
-                    <img src="../../src/assets/hoc-thi-tuyensinh.png" alt="icon" />
-                    <span className="red">Học - Thi - Tuyển sinh</span>
-                </div>
-
-                <img src="../../src/assets/quyche.jpg" alt="Quy chế" className="main-image" />
+          {/* Hướng Nghiệp */}
+          <div className="content-column">
+            <div className="content-title">
+              <img src="../../src/assets/icon-career.png" alt="icon" />
+              <span className="red">Hướng Nghiệp</span>
+            </div>
+            {huongnghiep.length > 0 ? (
+              <>
+                <img src="../../src/assets/default.jpg" alt="Hướng Nghiệp" className="main-image" />
                 <div className="main-article">
-                    <Link to="/quy-che-tuyen-sinh-2025">
-                    Những điểm cần lưu ý trong Quy chế tuyển sinh đại học 2025
-                    </Link>
-                    <p>(26/03/2025) <span className="new-badge">mới</span></p>
-                    <Link to="/quy-che-tuyen-sinh-2025" className="detail-link">Chi tiết ►</Link>
+                  <a href={`/bai-viet-${huongnghiep[0].id}`}>{huongnghiep[0].title}</a>
+                  <p>{new Date(huongnghiep[0].created_at).toLocaleDateString()}</p>
+                  <a href={`/bai-viet-${huongnghiep[0].id}`} className="detail-link">Chi tiết ►</a>
                 </div>
                 <ul className="sub-articles">
-                    <li> Những điểm mới trong Quy chế thi tốt nghiệp THPT từ 2025</li>
-                    <li> Đề thi tham khảo Kỳ thi tốt nghiệp THPT 2025</li>
+                  {huongnghiep.slice(1, 3).map(item => (
+                    <li key={item.id}>{item.title}</li>
+                  ))}
                 </ul>
-                <div className="see-all-container">
-                         <SeeAllButton onClick={() => window.location.href = "/news"} />
-                </div>
-                </div>
+              </>
+            ) : <p>Đang tải...</p>}
+            <div className="see-all-container">
+              <SeeAllButton onClick={() => window.location.href = "/news"} />
             </div>
-            </div>
+          </div>
+        </div>
 
-        </>
-        
-    );
+        <div className="content-columns">
+          {/* Sinh Viên */}
+          <div className="content-column">
+            <div className="content-title">
+              <img src="../../src/assets/sinhvien.png" alt="icon" />
+              <span className="red">Sinh Viên STU</span>
+            </div>
+            {sinhvien.length > 0 ? (
+              <>
+                <img src="../../src/assets/default.jpg" alt="Sinh Viên" className="main-image" />
+                <div className="main-article">
+                  <a href={`/bai-viet-${sinhvien[0].id}`}>{sinhvien[0].title}</a>
+                  <p>{new Date(sinhvien[0].created_at).toLocaleDateString()}</p>
+                  <a href={`/bai-viet-${sinhvien[0].id}`} className="detail-link">Chi tiết ►</a>
+                </div>
+                <ul className="sub-articles">
+                  {sinhvien.slice(1, 3).map(item => (
+                    <li key={item.id}>{item.title}</li>
+                  ))}
+                </ul>
+              </>
+            ) : <p>Đang tải...</p>}
+            <div className="see-all-container">
+              <SeeAllButton onClick={() => window.location.href = "/news"} />
+            </div>
+          </div>
+
+          {/* Học Thi */}
+          <div className="content-column">
+            <div className="content-title">
+              <img src="../../src/assets/hoc-thi-tuyensinh.png" alt="icon" />
+              <span className="red">Học - Thi - Tuyển Sinh</span>
+            </div>
+            {hocthi.length > 0 ? (
+              <>
+                <img src="../../src/assets/default.jpg" alt="Học Thi" className="main-image" />
+                <div className="main-article">
+                  <a href={`/bai-viet-${hocthi[0].id}`}>{hocthi[0].title}</a>
+                  <p>{new Date(hocthi[0].created_at).toLocaleDateString()}</p>
+                  <a href={`/bai-viet-${hocthi[0].id}`} className="detail-link">Chi tiết ►</a>
+                </div>
+                <ul className="sub-articles">
+                  {hocthi.slice(1, 3).map(item => (
+                    <li key={item.id}>{item.title}</li>
+                  ))}
+                </ul>
+              </>
+            ) : <p>Đang tải...</p>}
+            <div className="see-all-container">
+              <SeeAllButton onClick={() => window.location.href = "/news"} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default ContentPage;
