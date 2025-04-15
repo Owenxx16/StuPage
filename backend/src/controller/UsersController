@@ -4,9 +4,9 @@ const db = require('../config/database.js');
 const crypto = require('crypto');
 
 const createUser = async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email, password, pbId } = req.body;
 
-    if (!username || !email || !password) {
+    if (!username || !email || !password || !pbId) {
         return res.status(400).json({
             status: 400,
             message: 'All fields are required',
@@ -18,14 +18,15 @@ const createUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const [result] = await db.execute(
-            'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-            [username, email, hashedPassword]
+            'INSERT INTO users (username, email, password, pb_id) VALUES (?, ?, ?, ?)',
+            [username, email, hashedPassword, pbId]
         );
 
         const data = {
             id: result.insertId,
             username: username,
-            email: email
+            email: email,
+            pb_id: pbId
         };
 
         res.status(201).json({
@@ -77,7 +78,10 @@ const login = async (req, res) => {
 
     try {
         const [user] = await db.execute(
-            'SELECT id, email, password FROM users WHERE email = ?',
+            `SELECT users.id, users.email, users.password, users.pb_id, phongban.namepb as department 
+             FROM users 
+             LEFT JOIN phongban ON users.pb_id = phongban.id 
+             WHERE email = ?`,
             [email]
         );
 

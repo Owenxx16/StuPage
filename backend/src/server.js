@@ -18,6 +18,7 @@ const HocThiRouter = require('./routes/HocThi.js');
 const NewsCategoryRouter = require('./routes/NewsCategory.js');
 const CategoriesNavRouter = require('./routes/CategoryNav.js');
 const NavbarRouter = require('./routes/Navbar.js');
+const phongbanRouter = require('./routes/PhongBan.js');
 // Middleware to enable CORS
 app.use(cors());
 // Middleware to parse JSON requests
@@ -41,6 +42,7 @@ app.use('/categories', categoriesRouter);
 app.use('/user', userRouter);
 app.use('/news', NewsRouter);
 app.use('/news_content', NewsContentRouter);
+app.use('/phongban', phongbanRouter);
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port http://localhost:${PORT}`);
