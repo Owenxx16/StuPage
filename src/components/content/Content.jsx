@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import SeeAllButton from "../UI/SeeAllButton";
 import NewsItem from "./newsItem";
 
@@ -98,7 +97,7 @@ const ContentPage = () => {
             </div>
           </div>
 
-          {/* Hướng Nghiệp */}
+          {/* Hướng Nghiệp */ }
           <div className="content-column">
             <div className="content-title">
               <img src="../../src/assets/icon-career.png" alt="icon" />

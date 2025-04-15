@@ -51,6 +51,7 @@ function App() {
         {/* Admin Page - KHÔNG có Header/Footer */}
         <Route
     path="/adminpage"
+    errorElement={<ErrorPage/>}
     element={
       <PrivateRoute>
         <AdminPage />
@@ -113,6 +114,8 @@ function App() {
                 {/*Đăng nhập*/}
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/news" element={<NewsPage />} />
+                <Route path="*" element={<ErrorPage />} />
+                
               </Routes>
               <Footer />
             </>
