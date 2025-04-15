@@ -11,25 +11,18 @@ const ContentPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch dữ liệu chung
     fetch("https://stupage.onrender.com/news")
       .then((response) => response.json())
       .then((data) => {
-        console.log("Dữ liệu tin tức:", data);
         if (Array.isArray(data.data)) {
-          // Lọc dữ liệu theo từng category_id
-          const filteredTuyensinh = data.data.filter(event => event.category_id === 17);
-          const filteredHuongnghiep = data.data.filter(event => event.category_id === 16);
-          const filteredSinhvien = data.data.filter(event => event.category_id === 18);
-          const filteredHocthi = data.data.filter(event => event.category_id === 7);
-          const sortedNews = data.data.sort((a, b) => b.id - a.id); // Sắp xếp tin tức chung
+          const sortByNewest = (arr) =>
+            [...arr].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-          // Cập nhật trạng thái
-          setNews(sortedNews);
-          setTuyensinh(filteredTuyensinh);
-          setHuongnghiep(filteredHuongnghiep);
-          setSinhvien(filteredSinhvien);
-          setHocthi(filteredHocthi);
+          setNews(sortByNewest(data.data));
+          setTuyensinh(sortByNewest(data.data.filter(event => event.category_id === 17)));
+          setHuongnghiep(sortByNewest(data.data.filter(event => event.category_id === 16)));
+          setSinhvien(sortByNewest(data.data.filter(event => event.category_id === 18)));
+          setHocthi(sortByNewest(data.data.filter(event => event.category_id === 7)));
         } else {
           console.error("Dữ liệu không đúng định dạng:", data);
         }
@@ -44,6 +37,39 @@ const ContentPage = () => {
   if (loading) {
     return <p>Đang tải...</p>;
   }
+
+  const renderCategory = (title, icon, data) => (
+    <div className="content-column">
+      <div className="content-title">
+        <img src={icon} alt="icon" />
+        <span className="red">{title}</span>
+      </div>
+      {data.length > 0 ? (
+        <>
+          <img src={data[0].image_title} alt={data[0].title} className="main-image" />
+          <div className="main-article">
+            <a href={`/bai-viet-${data[0].id}`}>{data[0].title}</a>
+            <p>{new Date(data[0].created_at).toLocaleDateString()}</p>
+            <a href={`/bai-viet-${data[0].id}`} className="detail-link">
+              Chi tiết ►
+            </a>
+          </div>
+          <ul className="sub-articles">
+            {data.slice(1, 3).map((item) => (
+              <li key={item.id}>
+                <a href={`/bai-viet-${item.id}`}>{item.title}</a>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p>Đang tải...</p>
+      )}
+      <div className="see-all-container">
+        <SeeAllButton onClick={() => window.location.href = "/news"} />
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -124,61 +150,9 @@ const ContentPage = () => {
             </div>
           </div>
         </div>
-
         <div className="content-columns">
-          {/* Sinh Viên */}
-          <div className="content-column">
-            <div className="content-title">
-              <img src="../../src/assets/sinhvien.png" alt="icon" />
-              <span className="red">Sinh Viên STU</span>
-            </div>
-            {sinhvien.length > 0 ? (
-              <>
-                <img src={sinhvien[0].image_title}
-        alt={sinhvien[0].title} className="main-image" />
-                <div className="main-article">
-                  <a href={`/bai-viet-${sinhvien[0].id}`}>{sinhvien[0].title}</a>
-                  <p>{new Date(sinhvien[0].created_at).toLocaleDateString()}</p>
-                  <a href={`/bai-viet-${sinhvien[0].id}`} className="detail-link">Chi tiết ►</a>
-                </div>
-                <ul className="sub-articles">
-                  {sinhvien.slice(1, 3).map(item => (
-                    <li key={item.id}>{item.title}</li>
-                  ))}
-                </ul>
-              </>
-            ) : <p>Đang tải...</p>}
-            <div className="see-all-container">
-              <SeeAllButton onClick={() => window.location.href = "/news"} />
-            </div>
-          </div>
-
-          {/* Học Thi */}
-          <div className="content-column">
-            <div className="content-title">
-              <img src="../../src/assets/hoc-thi-tuyensinh.png" alt="icon" />
-              <span className="red">Học - Thi - Tuyển Sinh</span>
-            </div>
-            {hocthi.length > 0 ? (
-              <>
-                <img src={hocthi[0].image_title}
-        alt={hocthi[0].title} className="main-image" />
-                <div className="main-article">
-                  <a href={`/bai-viet-${hocthi[0].id}`}>{hocthi[0].title}</a>
-                  <p>{new Date(hocthi[0].created_at).toLocaleDateString()}</p>
-                  <a href={`/bai-viet-${hocthi[0].id}`} className="detail-link">Chi tiết ►</a>
-                </div>
-                <ul className="sub-articles">
-                  {hocthi.slice(1, 3).map(item => (
-                    <li key={item.id}>{item.title}</li>
-                  ))}
-                </ul>
-              </>
-            ) : <p>Đang tải...</p>}
-            <div className="see-all-container">
-              <SeeAllButton onClick={() => window.location.href = "/news"} />
-            </div>
-          </div>
+          {renderCategory("Sinh Viên STU", "../../src/assets/sinhvien.png", sinhvien)}
+          {renderCategory("Học - Thi - Tuyển Sinh", "../../src/assets/hoc-thi-tuyensinh.png", hocthi)}
         </div>
       </div>
     </>

@@ -6,6 +6,13 @@ const EventSchedule = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const formatVietnameseDate = (dateString) => {
+    const date = new Date(dateString);
+    const days = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+    const weekday = days[date.getDay()];
+    return `${weekday}, ${date.toLocaleDateString("vi-VN")}`;
+  };
+
   useEffect(() => {
     fetch("https://stupage.onrender.com/news")
       .then((response) => response.json())
@@ -47,8 +54,7 @@ const EventSchedule = () => {
             events.map((item) => (
               <li key={item.id} className="event-item">
                 <div className="event-date-box">
-                  <div className="event-day">{item.category_name || "Chưa có thông tin"}</div>
-                  <div className="event-date">{item.created_at || "Ngày chưa cập nhật"}</div>
+                <div className="event-date">{formatVietnameseDate(item.created_at) || "Ngày chưa cập nhật"}</div>
                 </div>
                 <div className="event-description">{item.title || "Thông tin sự kiện chưa có"}</div>
               </li>
