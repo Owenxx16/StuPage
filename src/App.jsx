@@ -42,6 +42,9 @@ import NewsManagement from "./pages/admin/NewsManagement";
 import NewsContentManagement from "./pages/admin/NewsContentManagement";
 import ErrorPage from "./pages/errorPage";
 import NewsPage from "./pages/Tintuc/NewsPage";
+import NewsList from "./pages/Tintuc/NewsList";
+import NewsDetail from "./pages/Tintuc/NewsDetail";
+
 // ... các import khác
 
 function App() {
@@ -113,7 +116,9 @@ function App() {
                 <Route path="/tap-chi" element={<TapChi />} />
                 {/*Đăng nhập*/}
                 <Route path="/login" element={<LoginForm />} />
-                <Route path="/news" element={<NewsPage />} />
+                <Route path="/news" element={<NewsList />} />
+                <Route path="/news/:id" element={<NewsDetail />} />
+
                 <Route path="*" element={<ErrorPage />} />
                 
               </Routes>
