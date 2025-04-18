@@ -4,7 +4,7 @@ const db = require('../config/database.js');
 const crypto = require('crypto');
 
 const createUser = async (req, res) => {
-    const { username, email, password, pbId } = req.body;
+    const { username, email, password, category_id } = req.body;
 
     if (!username || !email || !password || !pbId) {
         return res.status(400).json({
@@ -18,15 +18,15 @@ const createUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const [result] = await db.execute(
-            'INSERT INTO users (username, email, password, pb_id) VALUES (?, ?, ?, ?)',
-            [username, email, hashedPassword, pbId]
+            'INSERT INTO users (username, email, password, category_id) VALUES (?, ?, ?, ?)',
+            [username, email, hashedPassword, category_id]
         );
 
         const data = {
             id: result.insertId,
             username: username,
             email: email,
-            pb_id: pbId
+            category_id: category_id
         };
 
         res.status(201).json({
@@ -78,9 +78,8 @@ const login = async (req, res) => {
 
     try {
         const [user] = await db.execute(
-            `SELECT users.id, users.email, users.password, users.pb_id, phongban.namepb as department 
+            `SELECT users.id, users.email, users.password, users.category_id, phongban.namepb as department 
              FROM users 
-             LEFT JOIN phongban ON users.pb_id = phongban.id 
              WHERE email = ?`,
             [email]
         );
