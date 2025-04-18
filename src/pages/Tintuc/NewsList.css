@@ -26,9 +26,9 @@
   }
   
   .news-title {
-    font-size: 24px;
+    font-size: 16px;
     font-weight: bold;
-    color: #c00;
+    color: #0c4da2;
   }
   
   .news-main {
@@ -46,8 +46,6 @@
   }
   
   .news-image {
-    width: 240px;
-    height: 150px;
     object-fit: cover;
     border: 1px solid #ccc;
   }

@@ -48,16 +48,16 @@ const ContentPage = () => {
         <>
           <img src={data[0].image_title} alt={data[0].title} className="main-image" />
           <div className="main-article">
-            <a href={`/bai-viet-${data[0].id}`}>{data[0].title}</a>
+            <a href={`/news/${data[0].id}`}>{data[0].title}</a>
             <p>{new Date(data[0].created_at).toLocaleDateString()}</p>
-            <a href={`/bai-viet-${data[0].id}`} className="detail-link">
+            <a href={`/news/${data[0].id}`} className="detail-link">
               Chi tiết ►
             </a>
           </div>
           <ul className="sub-articles">
             {data.slice(1, 3).map((item) => (
               <li key={item.id}>
-                <a href={`/bai-viet-${item.id}`}>{item.title}</a>
+                <a href={`/news/${item.id}`}>{item.title}</a>
               </li>
             ))}
           </ul>
@@ -107,9 +107,9 @@ const ContentPage = () => {
                 <img src={tuyensinh[0].image_title}
         alt={tuyensinh[0].title} className="main-image" />
                 <div className="main-article">
-                  <a href={`/bai-viet-${tuyensinh[0].id}`}>{tuyensinh[0].title}</a>
+                  <a href={`/news/${tuyensinh[0].id}`}>{tuyensinh[0].title}</a>
                   <p>{new Date(tuyensinh[0].created_at).toLocaleDateString()}</p>
-                  <a href={`/bai-viet-${tuyensinh[0].id}`} className="detail-link">Chi tiết ►</a>
+                  <a href={`/news/${tuyensinh[0].id}`} className="detail-link">Chi tiết ►</a>
                 </div>
                 <ul className="sub-articles">
                   {tuyensinh.slice(1, 3).map(item => (
@@ -134,9 +134,9 @@ const ContentPage = () => {
                 <img src={huongnghiep[0].image_title}
         alt={huongnghiep[0].title} className="main-image" />
                 <div className="main-article">
-                  <a href={`/bai-viet-${huongnghiep[0].id}`}>{huongnghiep[0].title}</a>
+                  <a href={`/news/${huongnghiep[0].id}`}>{huongnghiep[0].title}</a>
                   <p>{new Date(huongnghiep[0].created_at).toLocaleDateString()}</p>
-                  <a href={`/bai-viet-${huongnghiep[0].id}`} className="detail-link">Chi tiết ►</a>
+                  <a href={`/news/${huongnghiep[0].id}`} className="detail-link">Chi tiết ►</a>
                 </div>
                 <ul className="sub-articles">
                   {huongnghiep.slice(1, 3).map(item => (
