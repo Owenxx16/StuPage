@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const createUser = async (req, res) => {
     const { username, email, password, category_id } = req.body;
 
-    if (!username || !email || !password || !pbId) {
+    if (!username || !email || !password || !category_id) {
         return res.status(400).json({
             status: 400,
             message: 'All fields are required',
