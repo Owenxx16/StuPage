@@ -73,47 +73,132 @@ const getallusers = async (req, res) => {
 };
 
 
+// const login = async (req, res) => {
+//     const { email, password } = req.body;
+
+//     try {
+//         const [user] = await db.execute(
+//             `SELECT users.id, users.email, users.password, users.category_id 
+//              FROM users 
+//              WHERE email = ?`,
+//             [email]
+//         );
+
+//         if (user.length === 0) {
+//             return res.status(404).json({
+//                 status: 404,
+//                 message: 'User not found',
+//                 data: null
+//             });
+//         }
+
+//         const isMatch = await bcrypt.compare(password, user[0].password);
+//         if (!isMatch) {
+//             return res.status(401).json({
+//                 status: 401,
+//                 message: 'Invalid credentials',
+//                 data: null
+//             });
+//         }
+
+//         const token = jwt.sign(
+//             { userId: user[0].id, username: user[0].username },
+//             process.env.JWT_SECRET,
+//             { expiresIn: '1h' }
+//         );
+//         const refreshToken = crypto.randomBytes(40).toString('hex');
+//         await db.execute(
+//             'INSERT INTO refresh_tokens (user_id, refresh_token) VALUES (?, ?)',
+//             [user[0].id, refreshToken]
+//         );
+//         res.status(200).json({
+//             status: 200,
+//             message: 'Login successful',
+//             data: { token, refreshToken }
+//         });
+
+//     } catch (error) {
+//         res.status(500).json({
+//             status: 500,
+//             message: error.message,
+//             data: null
+//         });
+//     }
+
+// };
 const login = async (req, res) => {
     const { email, password } = req.body;
 
+    // Kiểm tra đầu vào
+    if (!email || !password) {
+        return res.status(400).json({
+            status: 400,
+            message: 'Email và mật khẩu là bắt buộc',
+            data: null
+        });
+    }
+
     try {
-        const [user] = await db.execute(
-            `SELECT users.id, users.email, users.password, users.category_id 
+        // Kiểm tra trong bảng users
+        let [userRows] = await db.execute(
+            `SELECT id, email, password, category_id 
              FROM users 
              WHERE email = ?`,
             [email]
         );
 
-        if (user.length === 0) {
+        let user = userRows[0];
+        let isAdmin = false;
+
+        // Nếu không tìm thấy trong bảng users, kiểm tra bảng admin
+        if (!user) {
+            const [adminRows] = await db.execute(
+                `SELECT id, email, password, username 
+                 FROM admin 
+                 WHERE email = ?`,
+                [email]
+            );
+            user = adminRows[0];
+            isAdmin = !!user; // Đánh dấu là admin nếu tìm thấy
+        }
+
+        // Nếu không tìm thấy user hoặc admin
+        if (!user) {
             return res.status(404).json({
                 status: 404,
-                message: 'User not found',
+                message: 'Không tìm thấy người dùng hoặc quản trị viên',
                 data: null
             });
         }
 
-        const isMatch = await bcrypt.compare(password, user[0].password);
+        // Kiểm tra mật khẩu
+        const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({
                 status: 401,
-                message: 'Invalid credentials',
+                message: 'Thông tin đăng nhập không hợp lệ',
                 data: null
             });
         }
 
-        const token = jwt.sign(
-            { userId: user[0].id, username: user[0].username },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
+        // Tạo JWT
+        const tokenExpiresIn = isAdmin ? '2h' : '1h';
+        const tokenPayload = isAdmin
+            ? { adminId: user.id, username: user.username }
+            : { userId: user.id, username: user.username || email }; // Dùng email nếu không có username
+        const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: tokenExpiresIn });
+
+        // Tạo và lưu refresh token
         const refreshToken = crypto.randomBytes(40).toString('hex');
-        await db.execute(
-            'INSERT INTO refresh_tokens (user_id, refresh_token) VALUES (?, ?)',
-            [user[0].id, refreshToken]
-        );
+        const refreshTokenQuery = isAdmin
+            ? 'INSERT INTO refresh_tokens (admin_id, refresh_token) VALUES (?, ?)'
+            : 'INSERT INTO refresh_tokens (user_id, refresh_token) VALUES (?, ?)';
+        await db.execute(refreshTokenQuery, [user.id, refreshToken]);
+
+        // Trả về phản hồi
         res.status(200).json({
             status: 200,
-            message: 'Login successful',
+            message: `Đăng nhập ${isAdmin ? 'quản trị viên' : 'người dùng'} thành công`,
             data: { token, refreshToken }
         });
 
@@ -124,9 +209,7 @@ const login = async (req, res) => {
             data: null
         });
     }
-
 };
-
 const refreshToken = async (req, res) => {
     const { refreshToken } = req.body;
 
