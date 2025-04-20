@@ -78,7 +78,7 @@ const login = async (req, res) => {
 
     try {
         const [user] = await db.execute(
-            `SELECT users.id, users.email, users.password, users.category_id, phongban.namepb as department 
+            `SELECT users.id, users.email, users.password, users.category_id 
              FROM users 
              WHERE email = ?`,
             [email]
