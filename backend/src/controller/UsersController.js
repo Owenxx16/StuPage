@@ -199,7 +199,10 @@ const login = async (req, res) => {
         res.status(200).json({
             status: 200,
             message: `Đăng nhập ${isAdmin ? 'quản trị viên' : 'người dùng'} thành công`,
-            data: { token, refreshToken }
+            data: {
+                user,
+                token, refreshToken
+            }
         });
 
     } catch (error) {
