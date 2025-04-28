@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { createAdmin, adminLogin, refreshAdminToken, adminLogout } = require("../controller/AdminContoller");
 const verifyAdmin = require("../Middleware/verifyAdmin");
-const { createUser,updateUser,getUser,getallusers} = require("../controller/UsersController");
+const { createUser, updateUser, getUser, getallusers } = require("../controller/UsersController");
 // Đăng ký admin (có thể chỉ dùng cho lần đầu thiết lập)
 router.post("/register", createAdmin);
 
@@ -20,7 +20,7 @@ router.get("/users", verifyAdmin, getallusers);
 // Create user thông qua admin
 router.post("/users", verifyAdmin, createUser);
 // Update user thông qua admin
-router.put("/users/:id", verifyAdmin, updateUser);
+router.put("/users/:userId", verifyAdmin, updateUser);
 // Get user thông qua admin
 router.get("/users/:id", verifyAdmin, getUser);
 

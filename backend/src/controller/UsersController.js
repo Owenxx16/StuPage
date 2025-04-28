@@ -302,8 +302,8 @@ const getUser = async (req, res) => {
 
 
 const updateUser = async (req, res) => {
-    const userId = req.user.userId;
-    const { username, email, password } = req.body;
+    const { userId } = req.params; // Lấy id từ URL
+    const { username, email, password, category_id } = req.body;
 
     try {
         let hashedPassword = null;
@@ -311,29 +311,36 @@ const updateUser = async (req, res) => {
             hashedPassword = await bcrypt.hash(password, 10);
         }
 
-        const [result] = await db.execute(
-            'UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?',
-            [
-                username,
-                email,
-                hashedPassword || db.raw('password'),
-                userId
-            ]
-        );
-
-        if (result.affectedRows > 0) {
-            res.status(200).json({
-                status: 200,
-                message: 'User updated successfully',
-                data: { id: userId, username, email }
-            });
-        } else {
-            res.status(404).json({
+        // Lấy user hiện tại
+        const [userRows] = await db.execute('SELECT * FROM users WHERE id = ?', [userId]);
+        if (userRows.length === 0) {
+            return res.status(404).json({
                 status: 404,
                 message: 'User not found',
                 data: null
             });
         }
+
+        // Nếu không truyền password mới, giữ password cũ
+        const finalPassword = hashedPassword || userRows[0].password;
+
+        // Update user
+        const [result] = await db.execute(
+            'UPDATE users SET username = ?, email = ?, password = ?, category_id = ? WHERE id = ?',
+            [
+                username,
+                email,
+                finalPassword,
+                category_id,
+                userId
+            ]
+        );
+
+        res.status(200).json({
+            status: 200,
+            message: 'User updated successfully',
+            data: { userId, username, email, category_id }
+        });
     } catch (error) {
         res.status(500).json({
             status: 500,
@@ -342,8 +349,6 @@ const updateUser = async (req, res) => {
         });
     }
 };
-
-
 
 module.exports = {
     createUser,
