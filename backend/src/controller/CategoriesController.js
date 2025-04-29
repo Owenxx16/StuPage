@@ -94,14 +94,30 @@ const updateCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
     const categoryId = req.params.id;
-
     try {
-        const [result] = await db.execute('DELETE FROM categories WHERE id = ?', [categoryId]);
+        const [newsRows] = await db.execute(
+            'SELECT id FROM news WHERE category_id = ?',
+            [categoryId]
+        );
 
+        const [sukienRows] = await db.execute(
+            'SELECT id FROM sukien WHERE category_id = ?',
+            [categoryId]
+        );
+
+        if (newsRows.length > 0 || sukienRows.length > 0) {
+            return res.status(400).json({
+                status: 400,
+                message: `Không thể xóa vì bị ràng buộc bởi ${newsRows.length || sukienRows.length}`,
+                data: null
+            });
+        }
+
+        const [result] = await db.execute('DELETE FROM categories WHERE id = ?', [categoryId]);
         if (result.affectedRows > 0) {
             res.status(200).json({
                 status: 200,
-                message: 'Category deleted successfully',
+                message: 'Category deleted successfully'
             });
         } else {
             res.status(404).json({
